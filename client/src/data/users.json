@@ -1,0 +1,16 @@
+[
+  {
+    "id": "aboubakar",
+    "name": "Aboubakar",
+    "emoji": "👨‍💼",
+    "level": "intermediate-advanced",
+    "interests": ["finance", "cars", "travel"]
+  },
+  {
+    "id": "abdoul-karim",
+    "name": "Abdoul Karim",
+    "emoji": "⚽",
+    "level": "beginner-intermediate",
+    "interests": ["football", "animals", "cars"]
+  }
+]

@@ -1,0 +1,16 @@
+[
+  { "id": 1, "emoji": "⚽", "title": "Describe your favorite player", "instruction": "In 3 sentences, describe your favorite footballer in English. Talk about their style, their best moment, and why you admire them.", "topic": "football" },
+  { "id": 2, "emoji": "🌍", "title": "Your morning in English", "instruction": "Describe everything you did from waking up until now — in English. Be as detailed as possible!", "topic": "daily-life" },
+  { "id": 3, "emoji": "🎵", "title": "Recommend a song", "instruction": "Recommend your favorite song right now to a foreign friend. Describe the vibe, the artist, and why they must listen.", "topic": "music" },
+  { "id": 4, "emoji": "✈️", "title": "Plan your dream trip", "instruction": "You have 2 weeks and unlimited money. Where do you go? Describe your trip day by day — at least 5 sentences.", "topic": "travel" },
+  { "id": 5, "emoji": "🚗", "title": "Sell me your dream car", "instruction": "Imagine you work at a dealership. Convince me to buy your dream car. Describe it like a salesperson!", "topic": "cars" },
+  { "id": 6, "emoji": "💡", "title": "Pitch your business idea", "instruction": "In 1 minute (5-6 sentences), pitch a business idea you'd start in Côte d'Ivoire. What's the problem? What's the solution?", "topic": "entrepreneurship" },
+  { "id": 7, "emoji": "📈", "title": "Explain inflation simply", "instruction": "Explain what inflation is to a 12-year-old using a real example from everyday life in Côte d'Ivoire.", "topic": "finance" },
+  { "id": 8, "emoji": "🎮", "title": "Defend your favorite game", "instruction": "Your friend says gaming is a waste of time. Defend gaming in English — give 3 strong reasons why it's valuable.", "topic": "gaming" },
+  { "id": 9, "emoji": "🎬", "title": "Review a movie or series", "instruction": "Give a 5-sentence review of the last movie or series you watched. Include the plot, your favorite moment, and your rating.", "topic": "movies-series" },
+  { "id": 10, "emoji": "👟", "title": "Describe your style", "instruction": "Describe your personal style in English. What do you wear? What brands do you like? What's your style inspiration?", "topic": "fashion" },
+  { "id": 11, "emoji": "🦁", "title": "Which animal are you?", "instruction": "If you were an animal, which one would you be and why? Describe the animal and link its qualities to your personality.", "topic": "animals" },
+  { "id": 12, "emoji": "🏆", "title": "AFCON debate", "instruction": "Which African team will win the next AFCON and why? Give your prediction with at least 3 strong arguments.", "topic": "football" },
+  { "id": 13, "emoji": "🌟", "title": "Introduce yourself to the world", "instruction": "Imagine you're on a global podcast. Introduce yourself in 6 sentences — who you are, where you're from, what you're passionate about.", "topic": "daily-life" },
+  { "id": 14, "emoji": "🔥", "title": "Top 3 Afrobeats tracks", "instruction": "Give your top 3 Afrobeats tracks of all time with a reason for each pick. Be passionate!", "topic": "music" }
+]

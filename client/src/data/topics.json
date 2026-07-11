@@ -1,0 +1,530 @@
+[
+  {
+    "id": "football",
+    "label": "Football",
+    "emoji": "⚽",
+    "color": "#22c55e",
+    "forUsers": ["abdoul-karim", "aboubakar"],
+    "modules": [
+      {
+        "id": "football-1",
+        "title": "Talking about a match",
+        "intro": "Football is the world's most spoken language. Let's learn how to talk about what happens on the pitch — goals, fouls, tactics — like a real fan.",
+        "vocab": ["goal", "referee", "penalty", "score", "offside", "striker", "tackle"],
+        "coachSeed": "Start a friendly conversation about a recent football match. Ask about the user's favorite team or a match they watched recently. Use vocabulary naturally: goal, referee, penalty, score, striker."
+      },
+      {
+        "id": "football-2",
+        "title": "Your favorite player",
+        "intro": "Every fan has a hero. Talking about your favorite player is a great way to practice opinions, comparisons, and expressing admiration in English.",
+        "vocab": ["dribble", "assist", "transfer", "contract", "champion", "debut", "legend"],
+        "coachSeed": "Ask the user about their favorite football player. Explore why they admire them, their best moments, and whether they think this player is a legend. Use vocabulary: dribble, assist, champion, legend."
+      },
+      {
+        "id": "football-3",
+        "title": "Tactics and formations",
+        "intro": "Football is chess with your feet. Talking tactics shows off real English fluency — let's go deeper than just goals.",
+        "vocab": ["formation", "pressing", "counterattack", "possession", "midfield", "defending", "strategy"],
+        "coachSeed": "Discuss football tactics with the user. Ask about their preferred formation, style of play, and what they think makes a team win. Use vocabulary: formation, pressing, possession, strategy."
+      },
+      {
+        "id": "football-4",
+        "title": "Transfer window drama",
+        "intro": "Every summer, the football world goes crazy with transfers. Rumours, big fees, surprise moves — let's talk about it all in English.",
+        "vocab": ["transfer fee", "rumour", "bid", "release clause", "agent", "loan", "announcement"],
+        "coachSeed": "Discuss transfer window news with the user. Ask which transfers excited or disappointed them, whether they think big fees are justified, and which player they'd sign for their team. Use vocabulary: transfer fee, bid, release clause, agent."
+      },
+      {
+        "id": "football-5",
+        "title": "AFCON and African football",
+        "intro": "Africa Cup of Nations is one of the most passionate tournaments in world football. Let's talk about it — the pride, the upsets, the stars.",
+        "vocab": ["tournament", "upset", "group stage", "host nation", "squad", "pride", "elimination"],
+        "coachSeed": "Discuss AFCON and African football with the user. Ask about their country's team, memorable moments from past editions, and their hopes for the next tournament. Use vocabulary: tournament, upset, squad, host nation."
+      },
+      {
+        "id": "football-6",
+        "title": "Comparing eras: who was the best?",
+        "intro": "Pelé vs Maradona vs Messi vs Ronaldo — the debate that never ends. Perfect for practicing comparisons and strong opinions in English.",
+        "vocab": ["generation", "era", "comparison", "peak", "consistent", "argument", "statistics"],
+        "coachSeed": "Debate with the user about the greatest footballer of all time. Push them to defend their choice with reasons. Use vocabulary: generation, era, peak, consistent, statistics."
+      }
+    ]
+  },
+  {
+    "id": "animals",
+    "label": "Animals & Nature",
+    "emoji": "🦁",
+    "color": "#f59e0b",
+    "forUsers": ["abdoul-karim"],
+    "modules": [
+      {
+        "id": "animals-1",
+        "title": "African wildlife",
+        "intro": "From the savanna to the rainforest, Africa has some of the most spectacular animals on Earth. Let's talk about them in English.",
+        "vocab": ["predator", "prey", "habitat", "species", "endangered", "wildlife", "savanna"],
+        "coachSeed": "Start a conversation about African wildlife. Ask the user about their favorite animal and what they find fascinating about it. Use vocabulary: predator, habitat, species, endangered, savanna."
+      },
+      {
+        "id": "animals-2",
+        "title": "Becoming a vet",
+        "intro": "If you dream of working with animals, you'll need English — most veterinary research and international collaboration happens in English.",
+        "vocab": ["diagnosis", "treatment", "vaccine", "surgery", "symptom", "clinic", "patient"],
+        "coachSeed": "Discuss the user's dream of becoming a veterinarian. Ask what type of animals they'd like to treat, what inspired them, and what they think veterinarians do day-to-day. Use vocabulary: diagnosis, treatment, vaccine, surgery."
+      },
+      {
+        "id": "animals-3",
+        "title": "Animal documentaries",
+        "intro": "Nature documentaries are one of the best ways to immerse yourself in English while learning about animals. Let's talk about them.",
+        "vocab": ["narrator", "footage", "migration", "behavior", "episode", "documentary", "wilderness"],
+        "coachSeed": "Talk with the user about animal documentaries they've watched. Ask about a memorable moment, a narrator they liked, or an animal they discovered. Use vocabulary: narrator, footage, migration, behavior."
+      },
+      {
+        "id": "animals-4",
+        "title": "Animal conservation",
+        "intro": "Many species are disappearing because of humans. Conservation is one of the most urgent issues of our time — and one English speakers debate passionately.",
+        "vocab": ["extinction", "conservation", "poaching", "reserve", "biodiversity", "illegal trade", "protection"],
+        "coachSeed": "Discuss animal conservation with the user. Ask what they think about species going extinct, whether humans are responsible, and what solutions exist. Use vocabulary: extinction, poaching, biodiversity, reserve."
+      },
+      {
+        "id": "animals-5",
+        "title": "Pets vs wild animals",
+        "intro": "Some people keep exotic animals as pets. Is that right or wrong? It's a great topic to practice expressing opinions and agreeing or disagreeing politely.",
+        "vocab": ["domestic", "exotic", "welfare", "captivity", "ethical", "bond", "companion"],
+        "coachSeed": "Debate with the user about keeping wild or exotic animals as pets. Ask for their opinion and push them to explain their reasoning. Use vocabulary: domestic, exotic, welfare, captivity, ethical."
+      },
+      {
+        "id": "animals-6",
+        "title": "Ocean life",
+        "intro": "The ocean covers 70% of the Earth and most of it is still unexplored. Talking about marine life opens up fascinating vocabulary.",
+        "vocab": ["coral reef", "marine", "deep sea", "ecosystem", "current", "species", "pollution"],
+        "coachSeed": "Discuss ocean life with the user. Ask what fascinates them about the sea, whether they've ever been snorkeling or diving, and what threats the ocean faces today. Use vocabulary: coral reef, marine, ecosystem, pollution."
+      }
+    ]
+  },
+  {
+    "id": "finance",
+    "label": "Finance & Business",
+    "emoji": "📈",
+    "color": "#6366f1",
+    "forUsers": ["aboubakar"],
+    "modules": [
+      {
+        "id": "finance-1",
+        "title": "Private equity basics",
+        "intro": "Private equity is one of the most exciting fields in finance — and almost entirely conducted in English globally. Let's sharpen your vocabulary.",
+        "vocab": ["portfolio", "leverage", "due diligence", "exit", "valuation", "LBO", "returns"],
+        "coachSeed": "Discuss private equity with the user. Ask about their interest in PE, what types of deals fascinate them, and their perspective on current market conditions. Use vocabulary: portfolio, leverage, due diligence, valuation, LBO."
+      },
+      {
+        "id": "finance-2",
+        "title": "Investment conversations",
+        "intro": "Being able to speak about markets, risk, and returns fluently opens doors in international finance. Let's practice.",
+        "vocab": ["asset class", "risk-adjusted", "diversification", "yield", "hedge", "benchmark", "allocation"],
+        "coachSeed": "Have an investment discussion with the user. Ask about their investment philosophy, asset classes they find interesting, or how they think about risk. Use vocabulary: asset class, diversification, yield, hedge, allocation."
+      },
+      {
+        "id": "finance-3",
+        "title": "Networking at finance events",
+        "intro": "In finance, who you know matters. Let's practice the kind of English you'd use at a conference, a cocktail reception, or a pitch meeting.",
+        "vocab": ["pitch", "networking", "stakeholder", "pitch deck", "follow-up", "opportunity", "elevator pitch"],
+        "coachSeed": "Role-play a networking scenario at a finance conference. The user just met a senior PE professional. Guide a natural conversation: introducing themselves, their background, and following up on a potential opportunity."
+      },
+      {
+        "id": "finance-4",
+        "title": "Startup ecosystem",
+        "intro": "Africa's startup scene is booming. From Fintech to Agritech, understanding startup culture and speaking about it in English is increasingly important.",
+        "vocab": ["founder", "seed round", "venture capital", "pitch deck", "runway", "traction", "disrupt"],
+        "coachSeed": "Discuss the African startup ecosystem with the user. Ask about interesting startups they've heard of, what sectors they think are most promising, and whether they'd ever want to found a company. Use vocabulary: founder, seed round, venture capital, traction."
+      },
+      {
+        "id": "finance-5",
+        "title": "Reading financial news",
+        "intro": "The FT, Bloomberg, Wall Street Journal — the world's top financial media is in English. Let's practice understanding and discussing financial news.",
+        "vocab": ["inflation", "interest rate", "central bank", "market correction", "bear market", "bull market", "recession"],
+        "coachSeed": "Discuss current financial news with the user. Ask about a recent economic development — inflation, interest rates, a market move. Challenge them to explain what it means and what they think will happen next. Use vocabulary: inflation, interest rate, bull market, recession."
+      },
+      {
+        "id": "finance-6",
+        "title": "Interview at a finance firm",
+        "intro": "Landing a job at a top finance firm requires fluent English in the interview. Let's practice common questions and how to answer them confidently.",
+        "vocab": ["competency", "analytical", "structured", "initiative", "leadership", "deal", "motivation"],
+        "coachSeed": "Role-play a finance job interview. Ask the user classic interview questions: why finance, walk me through your CV, tell me about a challenge you overcame, where do you see yourself in 5 years. Give natural feedback on their answers."
+      }
+    ]
+  },
+  {
+    "id": "cars",
+    "label": "Cars & Automotive",
+    "emoji": "🚗",
+    "color": "#ef4444",
+    "forUsers": ["aboubakar", "abdoul-karim"],
+    "modules": [
+      {
+        "id": "cars-1",
+        "title": "Your dream car",
+        "intro": "Cars are more than machines — they're culture, status, engineering, and art. Talking about them in English is a great way to build fluency.",
+        "vocab": ["horsepower", "torque", "suspension", "interior", "engine", "luxury", "performance"],
+        "coachSeed": "Ask the user about their dream car. Explore why they love it, what makes it special, and whether they prefer performance, luxury or design. Use vocabulary: horsepower, torque, suspension, interior, engine."
+      },
+      {
+        "id": "cars-2",
+        "title": "Electric vs petrol",
+        "intro": "The car world is changing fast. Electric vs petrol is one of the biggest debates — and a perfect topic to practice expressing opinions in English.",
+        "vocab": ["electric vehicle", "charging", "range", "emissions", "hybrid", "infrastructure", "battery"],
+        "coachSeed": "Discuss the electric vs petrol debate with the user. Ask their opinion, what they think the future of cars looks like, and whether they'd buy an EV. Use vocabulary: electric vehicle, charging, range, emissions, hybrid."
+      },
+      {
+        "id": "cars-3",
+        "title": "Formula 1",
+        "intro": "F1 is the pinnacle of motorsport and one of the most globally followed sports. It's also an incredible source of English vocabulary.",
+        "vocab": ["pole position", "pit stop", "aerodynamics", "lap time", "circuit", "overtake", "championship"],
+        "coachSeed": "Discuss Formula 1 with the user. Ask about their favorite driver or team, a memorable race, and whether they think F1 is the ultimate motorsport. Use vocabulary: pole position, pit stop, aerodynamics, circuit, championship."
+      },
+      {
+        "id": "cars-4",
+        "title": "Car culture in Côte d'Ivoire",
+        "intro": "Cars have a special place in Ivorian culture — from the prestige of certain brands to how people talk about their cars. Let's discuss this in English.",
+        "vocab": ["status symbol", "brand", "second-hand", "maintenance", "traffic", "road conditions", "import"],
+        "coachSeed": "Discuss car culture in Côte d'Ivoire with the user. Ask what brands are most popular and why, whether cars are a status symbol, and what the driving experience is like. Use vocabulary: status symbol, brand, maintenance, import."
+      },
+      {
+        "id": "cars-5",
+        "title": "Classic vs modern cars",
+        "intro": "Old school cool vs cutting-edge tech. The debate between classic and modern cars is perfect for practicing comparisons and strong opinions.",
+        "vocab": ["vintage", "restoration", "technology", "reliability", "nostalgic", "modern", "classic"],
+        "coachSeed": "Debate classic vs modern cars with the user. Ask which era of cars they prefer and why, whether they'd own a vintage car, and what they think is lost or gained in modern cars. Use vocabulary: vintage, restoration, reliability, nostalgic."
+      },
+      {
+        "id": "cars-6",
+        "title": "Buying a car",
+        "intro": "Buying a car involves negotiation, research, and decision-making. All great scenarios to practice practical English.",
+        "vocab": ["budget", "negotiate", "dealership", "test drive", "mileage", "warranty", "financing"],
+        "coachSeed": "Role-play a car buying scenario. The user is at a dealership looking to buy a car. Guide them through the conversation: asking questions, negotiating price, and making a decision. Use vocabulary: budget, negotiate, test drive, warranty, financing."
+      }
+    ]
+  },
+  {
+    "id": "travel",
+    "label": "Travel & Culture",
+    "emoji": "✈️",
+    "color": "#0ea5e9",
+    "forUsers": ["aboubakar"],
+    "modules": [
+      {
+        "id": "travel-1",
+        "title": "Planning a trip abroad",
+        "intro": "English is the universal language of travel. Being fluent opens up the world — from airports to hotels to making friends across cultures.",
+        "vocab": ["itinerary", "layover", "accommodation", "currency", "visa", "customs", "departure"],
+        "coachSeed": "Help the user plan an imaginary trip abroad. Ask where they'd go, what they'd do, and how they'd handle logistics. Use vocabulary: itinerary, layover, accommodation, currency, visa."
+      },
+      {
+        "id": "travel-2",
+        "title": "Describing a place",
+        "intro": "Being able to describe places vividly — the atmosphere, the food, the people — is a hallmark of fluent English. Let's practice.",
+        "vocab": ["vibrant", "bustling", "architecture", "cuisine", "atmosphere", "landmarks", "hidden gem"],
+        "coachSeed": "Ask the user to describe a place they've visited or dream of visiting. Encourage them to use descriptive language and share emotions. Use vocabulary: vibrant, bustling, cuisine, atmosphere, landmark."
+      },
+      {
+        "id": "travel-3",
+        "title": "At the airport",
+        "intro": "Airports are where English becomes essential. Check-in, security, boarding — let's make sure you're completely fluent in these situations.",
+        "vocab": ["boarding pass", "departure gate", "delay", "luggage", "security check", "terminal", "connecting flight"],
+        "coachSeed": "Role-play airport scenarios with the user. Start at check-in, move to security, then boarding. Ask how they handle delays or travel stress. Use vocabulary: boarding pass, gate, delay, luggage, connecting flight."
+      },
+      {
+        "id": "travel-4",
+        "title": "Cultural differences",
+        "intro": "Traveling means encountering different customs, values, and ways of life. Talking about cultural differences in English is both nuanced and fascinating.",
+        "vocab": ["custom", "tradition", "etiquette", "respect", "stereotype", "diversity", "open-minded"],
+        "coachSeed": "Discuss cultural differences with the user. Ask about cultural shocks they've experienced or heard about, what they admire in other cultures, and how they handle situations where customs clash. Use vocabulary: custom, etiquette, stereotype, diversity."
+      },
+      {
+        "id": "travel-5",
+        "title": "Food around the world",
+        "intro": "Food is the most delicious way to explore culture. Talking about food in English — describing flavors, comparing cuisines — is endlessly useful.",
+        "vocab": ["flavor", "spicy", "authentic", "cuisine", "ingredient", "dish", "street food"],
+        "coachSeed": "Discuss world food with the user. Ask about their favorite dishes, whether they've tried foreign food, what they'd order in a restaurant abroad, and how they'd describe Ivorian cuisine to someone who's never tried it. Use vocabulary: flavor, authentic, cuisine, street food."
+      },
+      {
+        "id": "travel-6",
+        "title": "Travel stories",
+        "intro": "The best conversations happen when you share real stories. Let's practice telling travel stories — mishaps, surprises, beautiful moments — in fluent English.",
+        "vocab": ["adventure", "unexpected", "highlight", "recommend", "experience", "journey", "memory"],
+        "coachSeed": "Ask the user to share a travel story — real or imaginary. Encourage them to tell it like a story: setting the scene, building tension, landing the punchline or lesson. Use vocabulary: adventure, unexpected, highlight, journey, memory."
+      }
+    ]
+  },
+  {
+    "id": "daily-life",
+    "label": "Daily Life",
+    "emoji": "🌍",
+    "color": "#14b8a6",
+    "forUsers": ["abdoul-karim", "aboubakar"],
+    "modules": [
+      {
+        "id": "daily-1",
+        "title": "Talking about your day",
+        "intro": "The most natural conversations are about everyday life. Being able to describe your day fluently is the foundation of real English conversation.",
+        "vocab": ["routine", "commute", "schedule", "productive", "exhausted", "relax", "catch up"],
+        "coachSeed": "Ask the user about their day — what they did, how they felt, what was the highlight. Keep it natural and conversational, like two friends catching up. Use vocabulary: routine, productive, exhausted, relax."
+      },
+      {
+        "id": "daily-2",
+        "title": "School and studying",
+        "intro": "School takes up most of your life as a student. Talking about it — classes, teachers, exams — in English is incredibly useful practice.",
+        "vocab": ["assignment", "deadline", "exam", "grade", "subject", "revise", "concentrate"],
+        "coachSeed": "Discuss school and studying with the user. Ask about their favorite subjects, how they prepare for exams, what stresses them out, and what they enjoy learning. Use vocabulary: assignment, deadline, grade, revise."
+      },
+      {
+        "id": "daily-3",
+        "title": "Food and eating habits",
+        "intro": "Everyone eats, so food is always a great conversation starter. Let's talk about what you eat, when, and why — in English.",
+        "vocab": ["meal", "snack", "diet", "ingredient", "recipe", "appetite", "favorite dish"],
+        "coachSeed": "Talk with the user about their food habits. Ask about their favorite meals, what they eat for breakfast vs dinner, whether they cook, and what Ivorian dish they'd recommend to a foreigner. Use vocabulary: meal, diet, ingredient, recipe."
+      },
+      {
+        "id": "daily-4",
+        "title": "Weekend plans",
+        "intro": "Making plans, inviting friends, describing what you did — weekend conversations are some of the most natural English practice you can get.",
+        "vocab": ["hang out", "plans", "spontaneous", "invite", "bored", "fun", "catch up"],
+        "coachSeed": "Talk about weekends with the user. Ask what they did last weekend, what they enjoy doing in their free time, and what their perfect weekend would look like. Use vocabulary: hang out, spontaneous, invite, catch up."
+      },
+      {
+        "id": "daily-5",
+        "title": "Social media and technology",
+        "intro": "Social media, apps, and technology are a huge part of modern life. The vocabulary for this world is almost entirely English.",
+        "vocab": ["content", "scroll", "trending", "algorithm", "notification", "platform", "followers"],
+        "coachSeed": "Discuss social media with the user. Ask which platforms they use, what content they consume or create, how social media affects them, and whether they think it's mostly positive or negative. Use vocabulary: content, trending, algorithm, notification."
+      },
+      {
+        "id": "daily-6",
+        "title": "Future goals and dreams",
+        "intro": "Talking about your ambitions, plans, and dreams in English is one of the most powerful things you can practice. It's personal and meaningful.",
+        "vocab": ["ambition", "goal", "achieve", "passion", "obstacle", "motivation", "vision"],
+        "coachSeed": "Have a deep conversation about the user's future. Ask about their biggest ambition, what steps they're taking toward it, what their biggest obstacle is, and what their life looks like in 10 years. Use vocabulary: ambition, achieve, passion, obstacle, motivation."
+      }
+    ]
+  },
+  {
+    "id": "music",
+    "label": "Music & Afrobeats",
+    "emoji": "🎵",
+    "color": "#ec4899",
+    "forUsers": ["abdoul-karim", "aboubakar"],
+    "modules": [
+      {
+        "id": "music-1",
+        "title": "Afrobeats goes global",
+        "intro": "Burna Boy, Wizkid, Davido — African music is taking over the world. Let's talk about it in English, the language of the international music scene.",
+        "vocab": ["genre", "lyrics", "rhythm", "chart", "release", "vibe", "mainstream"],
+        "coachSeed": "Discuss Afrobeats and African music going global. Ask about the user's favorite artists, what makes the music special, and whether they think African artists get enough recognition. Use vocabulary: genre, rhythm, chart, mainstream."
+      },
+      {
+        "id": "music-2",
+        "title": "Your playlist right now",
+        "intro": "What you listen to says a lot about you. Talking about your current playlist is natural, personal, and great English practice.",
+        "vocab": ["playlist", "track", "vibe", "mood", "banger", "loop", "shuffle"],
+        "coachSeed": "Ask the user about what they're currently listening to. What tracks are on repeat? What song fits their mood today? Are there any artists they just discovered? Use vocabulary: playlist, track, vibe, mood, banger."
+      },
+      {
+        "id": "music-3",
+        "title": "Live concerts and festivals",
+        "intro": "There's nothing like live music. Talking about concerts — the energy, the crowd, the artist — is rich territory for English conversation.",
+        "vocab": ["concert", "festival", "crowd", "stage", "performance", "encore", "atmosphere"],
+        "coachSeed": "Talk about live music experiences. Ask if the user has ever been to a concert or festival, what it was like, and which artist they'd most want to see live. Use vocabulary: concert, crowd, stage, performance, atmosphere."
+      },
+      {
+        "id": "music-4",
+        "title": "Rap and storytelling",
+        "intro": "Rap is poetry with a beat. Understanding rap lyrics is one of the fastest ways to improve English — the vocabulary is rich and the storytelling is powerful.",
+        "vocab": ["bars", "flow", "punchline", "storytelling", "hook", "verse", "freestyle"],
+        "coachSeed": "Discuss rap music with the user. Ask about their favorite rappers, what makes a great rap verse, and whether they think rap is a form of poetry. Use vocabulary: bars, flow, punchline, storytelling, hook."
+      },
+      {
+        "id": "music-5",
+        "title": "Making music",
+        "intro": "Have you ever dreamed of making music? From beatmaking to singing, the creative process behind music is fascinating to talk about in English.",
+        "vocab": ["producer", "beat", "studio", "record", "sample", "mix", "instrument"],
+        "coachSeed": "Discuss music production and creation with the user. Ask if they play any instruments or make beats, what their dream music project would be, and who they'd collaborate with if they could choose anyone. Use vocabulary: producer, beat, studio, sample."
+      }
+    ]
+  },
+  {
+    "id": "gaming",
+    "label": "Gaming & Esports",
+    "emoji": "🎮",
+    "color": "#8b5cf6",
+    "forUsers": ["abdoul-karim", "aboubakar"],
+    "modules": [
+      {
+        "id": "gaming-1",
+        "title": "Your favorite games",
+        "intro": "Gaming is one of the biggest industries in the world — and almost entirely in English. If you play games, you already know more English than you think.",
+        "vocab": ["multiplayer", "campaign", "character", "level up", "respawn", "graphics", "console"],
+        "coachSeed": "Talk with the user about their favorite video games. Ask what they play, why they enjoy it, and whether they prefer story-driven games or multiplayer. Use vocabulary: multiplayer, campaign, level up, graphics, console."
+      },
+      {
+        "id": "gaming-2",
+        "title": "Esports and pro gaming",
+        "intro": "Esports is now a billion-dollar industry with professional leagues, stadiums, and stars. Let's talk about competitive gaming in English.",
+        "vocab": ["tournament", "team", "strategy", "rank", "compete", "sponsor", "broadcast"],
+        "coachSeed": "Discuss esports with the user. Ask if they follow any esports teams or tournaments, whether they think pro gaming is a real sport, and what game they'd go pro in if they could. Use vocabulary: tournament, rank, compete, sponsor."
+      },
+      {
+        "id": "gaming-3",
+        "title": "Gaming culture and community",
+        "intro": "Gaming isn't just about playing — it's about streams, memes, communities, and culture. All of that happens in English.",
+        "vocab": ["stream", "content creator", "community", "chat", "clip", "highlight", "subscriber"],
+        "coachSeed": "Discuss gaming culture with the user. Ask if they watch gaming streams on YouTube or Twitch, whether they'd ever want to be a gaming content creator, and what they think of gaming communities online. Use vocabulary: stream, content creator, community, clip."
+      },
+      {
+        "id": "gaming-4",
+        "title": "Mobile gaming in Africa",
+        "intro": "Mobile gaming is huge in Africa — from PUBG Mobile to FIFA Mobile to Free Fire. Let's talk about the games that dominate African phones.",
+        "vocab": ["mobile game", "free-to-play", "update", "server", "squad", "battle royale", "ranked"],
+        "coachSeed": "Discuss mobile gaming in Côte d'Ivoire and Africa. Ask what mobile games are most popular, whether they prefer mobile or console/PC, and what makes mobile gaming so accessible. Use vocabulary: mobile game, free-to-play, squad, battle royale."
+      }
+    ]
+  },
+  {
+    "id": "movies-series",
+    "label": "Movies & Series",
+    "emoji": "🎬",
+    "color": "#f97316",
+    "forUsers": ["abdoul-karim", "aboubakar"],
+    "modules": [
+      {
+        "id": "movies-1",
+        "title": "Your favorite series right now",
+        "intro": "Watching series in English with English subtitles is one of the most effective ways to improve your listening. Let's talk about what you're watching.",
+        "vocab": ["episode", "plot twist", "cliffhanger", "binge-watch", "season", "cast", "spoiler"],
+        "coachSeed": "Ask the user about their favorite series. What are they binge-watching right now? What's the best plot twist they've seen? Do they watch with subtitles? Use vocabulary: episode, plot twist, binge-watch, cliffhanger, spoiler."
+      },
+      {
+        "id": "movies-2",
+        "title": "Action movies and blockbusters",
+        "intro": "Marvel, Fast & Furious, Mission Impossible — blockbusters are made for everyone. They're also perfect for learning conversational English.",
+        "vocab": ["sequel", "franchise", "stunts", "special effects", "box office", "trailer", "blockbuster"],
+        "coachSeed": "Discuss action movies and blockbusters with the user. Ask about their favorite franchise, the best action scene they remember, and which movie sequel they're most excited about. Use vocabulary: sequel, franchise, stunts, special effects, box office."
+      },
+      {
+        "id": "movies-3",
+        "title": "African cinema",
+        "intro": "African cinema is rising — from Nollywood to Afrobulle. Talking about African films in English positions you as a voice for African stories globally.",
+        "vocab": ["filmmaker", "storytelling", "representation", "industry", "award", "premiere", "narrative"],
+        "coachSeed": "Discuss African cinema with the user. Ask about Nollywood films or Ivorian cinema they've seen, why they think African stories matter globally, and which African film they'd recommend to a foreign friend. Use vocabulary: filmmaker, representation, narrative, award."
+      },
+      {
+        "id": "movies-4",
+        "title": "Talking about a film you loved",
+        "intro": "Being able to recommend a film passionately — the story, the characters, the emotion — is a mark of real English fluency.",
+        "vocab": ["recommend", "storyline", "performance", "emotional", "impact", "scene", "soundtrack"],
+        "coachSeed": "Ask the user to recommend a film they absolutely love. Have them explain the storyline, why the performances moved them, and what scene they remember most. Use vocabulary: recommend, storyline, performance, emotional, scene, soundtrack."
+      }
+    ]
+  },
+  {
+    "id": "entrepreneurship",
+    "label": "Business & Entrepreneurship",
+    "emoji": "💡",
+    "color": "#10b981",
+    "forUsers": ["aboubakar", "abdoul-karim"],
+    "modules": [
+      {
+        "id": "entrepr-1",
+        "title": "Starting a business in Africa",
+        "intro": "Africa is the youngest continent and the next big growth story. Young Africans are building businesses — let's talk about entrepreneurship in English.",
+        "vocab": ["startup", "idea", "market", "customer", "revenue", "problem-solving", "opportunity"],
+        "coachSeed": "Discuss entrepreneurship in Africa with the user. Ask if they have a business idea, what problem they'd want to solve, and who they look up to as an African entrepreneur. Use vocabulary: startup, market, customer, revenue, opportunity."
+      },
+      {
+        "id": "entrepr-2",
+        "title": "Social media as a business tool",
+        "intro": "Instagram, TikTok, YouTube — young entrepreneurs use social media to build brands and make money. Let's talk about the business side of content.",
+        "vocab": ["brand", "audience", "engagement", "monetize", "content strategy", "influence", "growth"],
+        "coachSeed": "Discuss using social media as a business tool. Ask if the user follows any content creators who turned their platform into a business, what niche they'd choose, and how they'd grow an audience. Use vocabulary: brand, audience, engagement, monetize, growth."
+      },
+      {
+        "id": "entrepr-3",
+        "title": "The hustle mindset",
+        "intro": "Hard work, discipline, resilience — the vocabulary of success is mostly English. Let's talk about the mindset it takes to build something.",
+        "vocab": ["hustle", "discipline", "resilience", "failure", "mindset", "invest", "consistency"],
+        "coachSeed": "Have a motivational conversation about the hustle mindset. Ask the user about someone they admire for their work ethic, what they think separates successful people, and what their biggest challenge is right now. Use vocabulary: discipline, resilience, mindset, consistency."
+      }
+    ]
+  },
+  {
+    "id": "fashion",
+    "label": "Fashion & Style",
+    "emoji": "👟",
+    "color": "#d946ef",
+    "forUsers": ["abdoul-karim", "aboubakar"],
+    "modules": [
+      {
+        "id": "fashion-1",
+        "title": "Streetwear and sneakers",
+        "intro": "Sneakers, hoodies, streetwear — fashion culture has its own English vocabulary. If you love style, let's talk about it.",
+        "vocab": ["sneakers", "drop", "collab", "limited edition", "hype", "outfit", "aesthetic"],
+        "coachSeed": "Discuss streetwear and sneaker culture with the user. Ask about their style, whether they collect sneakers, what drops or collabs excite them, and how they put together an outfit. Use vocabulary: sneakers, drop, collab, limited edition, hype, aesthetic."
+      },
+      {
+        "id": "fashion-2",
+        "title": "African fashion on the world stage",
+        "intro": "African designers and fabrics are going global. Talking about African fashion in English lets you represent your culture on a world stage.",
+        "vocab": ["fabric", "designer", "cultural", "pattern", "traditional", "modern", "runway"],
+        "coachSeed": "Discuss African fashion going global. Ask what the user loves about traditional African fabrics and styles, which African designers they know, and whether they think African fashion deserves more recognition. Use vocabulary: fabric, designer, cultural, pattern, runway."
+      }
+    ]
+  },
+  {
+    "id": "scenarios",
+    "label": "Scénarios réels",
+    "emoji": "🎭",
+    "color": "#06b6d4",
+    "forUsers": ["abdoul-karim", "aboubakar"],
+    "modules": [
+      {
+        "id": "scenario-1",
+        "title": "Job interview in English",
+        "intro": "You're interviewing for your dream job. The interviewer speaks only English. This is your moment — let's practice until it feels natural.",
+        "vocab": ["motivated", "experience", "strengths", "weaknesses", "opportunity", "contribute", "challenge"],
+        "coachSeed": "Role-play a job interview entirely in English. You are the interviewer. Start with 'Tell me about yourself', then ask about experience, strengths, a challenge they overcame, and why they want this job. Give encouraging but honest feedback on their answers."
+      },
+      {
+        "id": "scenario-2",
+        "title": "Ordering at a restaurant abroad",
+        "intro": "You're at a restaurant in London, New York, or Dubai. The menu is in English, the waiter doesn't speak French. Let's make sure you're ready.",
+        "vocab": ["order", "recommend", "allergies", "bill", "tip", "reservation", "menu"],
+        "coachSeed": "Role-play a restaurant scenario. You are the waiter at an English-speaking restaurant. The user needs to ask for a table, read the menu, order food, ask questions about dishes, and request the bill. Keep it natural and fun."
+      },
+      {
+        "id": "scenario-3",
+        "title": "Meeting someone new at a party",
+        "intro": "Small talk is an art. At international events, the ability to start and keep a conversation going in English is a superpower.",
+        "vocab": ["introduce", "background", "hobby", "recommendation", "connection", "follow up", "network"],
+        "coachSeed": "Role-play meeting someone new at a party or networking event. You are the other person — make it feel real and spontaneous. Ask about their background, interests, what they do. Help them practice small talk, transitions, and gracefully ending a conversation."
+      },
+      {
+        "id": "scenario-4",
+        "title": "Negotiating a price",
+        "intro": "Whether it's your salary, a deal, or a market purchase — negotiating in English requires confidence, vocabulary, and strategy.",
+        "vocab": ["offer", "counteroffer", "budget", "deal", "flexible", "worth", "agree"],
+        "coachSeed": "Role-play a negotiation. Start with a salary negotiation scenario: the user has a job offer and wants to negotiate a higher salary. Play the HR manager — be firm but open. Guide the user through making their case, countering, and closing the deal."
+      },
+      {
+        "id": "scenario-5",
+        "title": "Calling customer service",
+        "intro": "Calling a company in English to complain, ask a question, or solve a problem. It's stressful — but great practice for real fluency.",
+        "vocab": ["complaint", "refund", "issue", "resolve", "reference number", "hold", "transfer"],
+        "coachSeed": "Role-play a customer service call. You are the customer service agent. The user has received a damaged product and wants a refund. Guide them through the call: explaining the problem, providing details, staying calm, and reaching a resolution."
+      },
+      {
+        "id": "scenario-6",
+        "title": "Giving a presentation",
+        "intro": "Presenting in front of an English-speaking audience — at school, at work, or at a conference. Let's build your confidence for this moment.",
+        "vocab": ["slide", "point", "audience", "conclusion", "example", "summarize", "question"],
+        "coachSeed": "Help the user practice giving a short presentation in English. Ask them to pick a topic they know well (their field, a passion, a business idea). Coach them through the structure: intro, 3 main points, conclusion, and how to handle audience questions."
+      }
+    ]
+  }
+]

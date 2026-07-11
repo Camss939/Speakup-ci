@@ -1,0 +1,327 @@
+.page { min-height: 100vh; background: var(--bg); }
+
+.main {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 5rem;
+}
+
+@media (max-width: 480px) {
+  .main { padding: 1.25rem 1rem 5rem; }
+}
+
+/* Hero */
+.hero {
+  background: linear-gradient(135deg, var(--accent) 0%, oklch(0.5 0.16 320) 100%);
+  border-radius: 1.75rem;
+  padding: 1.5rem 1.5rem 1.25rem;
+  margin-bottom: 1.25rem;
+  color: white;
+}
+
+.heroTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.heroSub {
+  font-size: 0.85rem;
+  opacity: 0.85;
+  display: block;
+  margin-bottom: 0.15rem;
+}
+
+.heroName {
+  font-family: 'Baloo 2', sans-serif;
+  font-size: 1.7rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  display: block;
+  line-height: 1.1;
+}
+
+.heroFlame {
+  font-size: 2rem;
+  animation: pulseFlame 1.6s ease-in-out infinite;
+}
+
+@keyframes pulseFlame {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+.heroStats {
+  display: flex;
+  gap: 0.625rem;
+}
+
+.heroStat {
+  flex: 1;
+  background: rgba(255,255,255,0.16);
+  border-radius: 0.875rem;
+  padding: 0.625rem 0.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.heroStatEmoji { font-size: 1.1rem; }
+
+.heroStatNum {
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1.2;
+}
+
+.heroStatLabel {
+  font-size: 0.65rem;
+  opacity: 0.8;
+}
+
+/* Expression du jour */
+.expressionCard {
+  background: var(--surface);
+  border: 1.5px solid oklch(0.88 0.04 300);
+  border-radius: 1.25rem;
+  padding: 1.25rem;
+  margin-bottom: 0.875rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.expressionCard::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-orange));
+}
+
+.expressionBadge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent-orange);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.expressionMain {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  margin-bottom: 0.625rem;
+}
+
+.expressionEmoji { font-size: 2rem; flex-shrink: 0; }
+
+.expressionWord {
+  font-family: 'Baloo 2', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+.expressionMeaning {
+  font-size: 0.83rem;
+  color: var(--text-muted);
+  margin-top: 0.1rem;
+}
+
+.expressionExample {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  background: var(--surface-hover);
+  border-radius: 0.625rem;
+  padding: 0.5rem 0.75rem;
+}
+
+/* Défi du jour */
+.challengeCard {
+  background: linear-gradient(135deg, var(--accent-green) 0%, oklch(0.55 0.15 165) 100%);
+  border-radius: 1.25rem;
+  padding: 1.25rem;
+  margin-bottom: 2rem;
+  color: white;
+  transition: opacity 0.2s;
+}
+
+.challengeCard.challengeDone { opacity: 0.65; }
+
+.challengeHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.challengeBadge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.9);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.doneTag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: rgba(255,255,255,0.25);
+  padding: 2px 10px;
+  border-radius: 20px;
+}
+
+.challengeTitle {
+  font-family: 'Baloo 2', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.375rem;
+}
+
+.challengeInstruction {
+  font-size: 0.84rem;
+  opacity: 0.92;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.challengeBtn {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 0.875rem;
+  border: none;
+  background: rgba(255,255,255,0.25);
+  color: white;
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.15s;
+  backdrop-filter: blur(4px);
+}
+
+.challengeBtn:hover:not(:disabled) { background: rgba(255,255,255,0.35); }
+.challengeBtn:disabled { cursor: not-allowed; opacity: 0.5; }
+
+/* Section title */
+.sectionTitle {
+  font-family: 'Baloo 2', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 0.875rem;
+  letter-spacing: -0.01em;
+}
+
+/* Topic grid */
+.topicGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  margin-bottom: 2.5rem;
+}
+
+.topicCard {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.875rem 1.125rem;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 1.25rem;
+  text-decoration: none;
+  transition: all 0.18s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+.topicCard:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(91,80,232,0.12);
+}
+
+.topicEmoji {
+  font-size: 2.1rem;
+  flex-shrink: 0;
+}
+
+.topicInfo { flex: 1; min-width: 0; }
+
+.topicLabel {
+  display: block;
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 700;
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.topicMeta {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.1rem;
+  margin-bottom: 0.4rem;
+  font-weight: 500;
+}
+
+.progressBar {
+  height: 5px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+.chevron {
+  color: var(--text-muted);
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+/* Sessions */
+.sessionList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.session {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.875rem 1rem;
+  background: var(--surface);
+  border-radius: 0.875rem;
+  border: 1px solid var(--border);
+}
+
+.sessionDate {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  width: 56px;
+  font-weight: 500;
+}
+
+.sessionTitle {
+  flex: 1;
+  font-size: 0.875rem;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.sessionDur {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
