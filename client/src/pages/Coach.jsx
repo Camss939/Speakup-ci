@@ -98,24 +98,37 @@ export default function Coach() {
 
   function startListening() {
     if (!SpeechRecognition) {
-      setError("Ton navigateur ne supporte pas la reconnaissance vocale. Utilise la zone de texte.");
+      setError("Ton navigateur ne supporte pas la reconnaissance vocale. Utilise Chrome ou Safari et la zone de texte.");
       return;
     }
+    if (listening) return;
     stopSpeaking(); setSpeaking(false);
     const recog = new SpeechRecognition();
     recogRef.current = recog;
     recog.lang = 'en-US'; recog.continuous = false; recog.interimResults = false;
-    recog.onstart = () => setListening(true);
+    recog.onstart = () => { setListening(true); setError(null); };
     recog.onend = () => setListening(false);
     recog.onresult = e => {
       const t = e.results[0][0].transcript;
       if (t.trim()) replyAsCoach(t.trim());
     };
-    recog.onerror = () => setListening(false);
-    recog.start();
+    recog.onerror = (e) => {
+      setListening(false);
+      if (e.error === 'not-allowed') setError("Accès au micro refusé. Autorise le micro dans les paramètres de ton navigateur.");
+      else if (e.error === 'no-speech') setError("Aucune voix détectée. Réessaie.");
+    };
+    try { recog.start(); } catch { setListening(false); }
   }
 
-  function stopListening() { recogRef.current?.stop(); setListening(false); }
+  function stopListening() {
+    if (recogRef.current) { recogRef.current.stop(); }
+    setListening(false);
+  }
+
+  function toggleListening() {
+    if (listening) stopListening();
+    else startListening();
+  }
 
   function handleSend(e) {
     e.preventDefault();
@@ -171,10 +184,9 @@ export default function Coach() {
       <div className={styles.controls}>
         <button
           className={`${styles.mic} ${listening ? styles.active : ''} ${speaking ? styles.speaking : ''}`}
-          onMouseDown={startListening} onMouseUp={stopListening}
-          onTouchStart={startListening} onTouchEnd={stopListening}
-          disabled={loading} aria-label="Maintenir pour parler">
-          {listening ? '🔴' : speaking ? '🔊' : '🎤'}
+          onClick={toggleListening}
+          disabled={loading} aria-label={listening ? "Arrêter" : "Parler"}>
+          {listening ? '🔴 Écoute...' : speaking ? '🔊' : '🎤'}
         </button>
         <form className={styles.textForm} onSubmit={handleSend}>
           <input className={styles.textInput} value={input}
@@ -183,7 +195,7 @@ export default function Coach() {
           <button className={styles.sendBtn} type="submit" disabled={!input.trim() || loading}>Envoyer</button>
         </form>
       </div>
-      <p className={styles.hint}>Maintiens 🎤 pour parler — ou tape en dessous</p>
+      <p className={styles.hint}>Clique 🎤 pour parler, reclique pour envoyer — ou tape en dessous</p>
     </div>
   );
 }
