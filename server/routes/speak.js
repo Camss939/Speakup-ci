@@ -28,7 +28,7 @@ export async function speak(req, res) {
   try {
     const audio = await getGroq().audio.speech.create({
       model: 'canopylabs/orpheus-v1-english',
-      voice: 'tara',
+      voice: 'leah',
       input: text,
       response_format: 'wav',
     });
