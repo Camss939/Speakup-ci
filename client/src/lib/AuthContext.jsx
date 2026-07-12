@@ -12,15 +12,16 @@ export function AuthProvider({ children }) {
   async function loadProfile(authUser) {
     if (!authUser) { setUser(null); setProfile(null); return; }
     setUser(authUser);
-    try {
-      const timeout = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('timeout')), 5000)
-      );
-      const p = await Promise.race([getProfile(authUser.id), timeout]);
-      setProfile(p ?? null);
-    } catch (e) {
-      console.error('[auth] getProfile error:', e.message);
-      setProfile(null);
+    // Retry up to 5 times with 500ms delay — gives the DB trigger time to complete
+    for (let i = 0; i < 5; i++) {
+      try {
+        const p = await getProfile(authUser.id);
+        setProfile(p ?? null);
+        return;
+      } catch (e) {
+        if (i === 4) { console.error('[auth] getProfile failed:', e.message); setProfile(null); }
+        else await new Promise(r => setTimeout(r, 500));
+      }
     }
   }
 

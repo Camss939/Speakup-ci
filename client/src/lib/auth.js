@@ -7,18 +7,14 @@ export async function signIn(email, password) {
 }
 
 export async function signUp(email, password, fullName, role = 'learner', level = 'beginner-intermediate', interests = []) {
-  const { data, error } = await supabase.auth.signUp({ email, password });
-  if (error) throw error;
-
-  const { error: profileError } = await supabase.from('profiles').insert({
-    id: data.user.id,
-    full_name: fullName,
-    role,
-    level,
-    interests,
-    approved: role === 'admin' ? true : false,
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: { full_name: fullName, role, level, interests },
+    },
   });
-  if (profileError) throw profileError;
+  if (error) throw error;
   return data;
 }
 
