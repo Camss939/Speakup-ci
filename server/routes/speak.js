@@ -1,11 +1,7 @@
-import Groq from 'groq-sdk';
+import { MsEdgeTTS, OUTPUT_FORMAT } from 'msedge-tts';
 import { createClient } from '@supabase/supabase-js';
 
-let _groq, _supabase;
-function getGroq() {
-  if (!_groq) _groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
-  return _groq;
-}
+let _supabase;
 function getSupabase() {
   if (!_supabase) _supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
   return _supabase;
@@ -26,21 +22,23 @@ export async function speak(req, res) {
   if (!text) return res.status(400).json({ error: 'No text provided' });
 
   try {
-    console.log('[speak] calling Groq TTS for text length:', text.length);
-    const audio = await getGroq().audio.speech.create({
-      model: 'canopylabs/orpheus-v1-english',
-      voice: 'leah',
-      input: text,
-      response_format: 'mp3',
+    const tts = new MsEdgeTTS();
+    await tts.setMetadata('en-US-AriaNeural', OUTPUT_FORMAT.AUDIO_24KHZ_48KBITRATE_MONO_MP3);
+
+    const chunks = [];
+    await new Promise((resolve, reject) => {
+      const readable = tts.toStream(text);
+      readable.on('data', chunk => chunks.push(chunk));
+      readable.on('end', resolve);
+      readable.on('error', reject);
     });
 
-    const buffer = Buffer.from(await audio.arrayBuffer());
-    console.log('[speak] success, buffer size:', buffer.length);
+    const buffer = Buffer.concat(chunks);
     res.setHeader('Content-Type', 'audio/mpeg');
     res.setHeader('Content-Length', buffer.length);
     res.send(buffer);
   } catch (err) {
-    console.error('[speak] ERROR:', err.message, JSON.stringify(err?.error ?? {}, null, 2));
+    console.error('[speak] Edge TTS error:', err.message);
     res.status(500).json({ error: err.message || 'TTS failed' });
   }
 }
