@@ -23,9 +23,22 @@ export async function sendMessage(userId, messages, topicContext) {
 }
 
 let currentAudio = null;
+let fallbackTimer = null;
 
 export async function speak(text, onEnd, accessToken) {
   stopSpeaking();
+
+  // Fallback timer — always calls onEnd after estimated duration + buffer
+  const words = text.split(' ').length;
+  const estimatedMs = Math.max(4000, words * 400);
+  fallbackTimer = setTimeout(() => { onEnd?.(); }, estimatedMs);
+
+  const done = () => {
+    clearTimeout(fallbackTimer);
+    fallbackTimer = null;
+    onEnd?.();
+  };
+
   try {
     const res = await fetch(`${API}/api/speak`, {
       method: 'POST',
@@ -39,19 +52,26 @@ export async function speak(text, onEnd, accessToken) {
     const blob = await res.blob();
     const url = URL.createObjectURL(blob);
     currentAudio = new Audio(url);
-    currentAudio.onended = () => { URL.revokeObjectURL(url); onEnd?.(); };
-    currentAudio.onerror = () => { onEnd?.(); };
+    currentAudio.onended = () => { URL.revokeObjectURL(url); done(); };
+    currentAudio.onerror = () => { URL.revokeObjectURL(url); done(); };
     await currentAudio.play();
   } catch {
     // fallback to browser TTS
     const utter = new SpeechSynthesisUtterance(text);
     utter.lang = 'en-US'; utter.rate = 0.92;
-    if (onEnd) utter.onend = onEnd;
-    window.speechSynthesis?.speak(utter);
+    utter.onend = done;
+    utter.onerror = done;
+    if (window.speechSynthesis) {
+      window.speechSynthesis.speak(utter);
+    } else {
+      done();
+    }
   }
 }
 
 export function stopSpeaking() {
+  clearTimeout(fallbackTimer);
+  fallbackTimer = null;
   if (currentAudio) { currentAudio.pause(); currentAudio = null; }
   window.speechSynthesis?.cancel();
 }
