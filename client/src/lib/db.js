@@ -131,7 +131,28 @@ export async function getSessionsForUser(userId) {
   return data || [];
 }
 
-// Parent: children linked by parent_id
+// ── Daily challenge ──────────────────────────────────────────
+
+export async function getDailyChallengeDone(userId) {
+  const today = new Date().toISOString().slice(0, 10);
+  const { data } = await supabase
+    .from('progress')
+    .select('percentage')
+    .eq('user_id', userId)
+    .eq('module_id', `daily-challenge-${today}`)
+    .single();
+  return data?.percentage === 100;
+}
+
+export async function setDailyChallengeDone(userId) {
+  const today = new Date().toISOString().slice(0, 10);
+  await supabase.from('progress').upsert(
+    { user_id: userId, module_id: `daily-challenge-${today}`, percentage: 100, updated_at: new Date().toISOString() },
+    { onConflict: 'user_id,module_id' }
+  );
+}
+
+// ── Parent: children linked by parent_id ─────────────────────
 export async function getChildren(parentId) {
   const { data } = await supabase
     .from('profiles')

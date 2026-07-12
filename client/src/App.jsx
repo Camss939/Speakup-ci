@@ -7,6 +7,7 @@ import Topics from './pages/Topics';
 import ModuleDetail from './pages/ModuleDetail';
 import Coach from './pages/Coach';
 import AdminDashboard from './pages/AdminDashboard';
+import ParentDashboard from './pages/ParentDashboard';
 
 const Spinner = () => (
   <div style={{ display:'flex', alignItems:'center', justifyContent:'center', height:'100vh', color:'var(--text-muted)' }}>
@@ -39,6 +40,7 @@ function RootRedirect() {
   if (loading) return <Spinner />;
   if (!user) return <Navigate to="/login" replace />;
   if (profile?.role === 'admin') return <Navigate to="/admin" replace />;
+  if (profile?.role === 'parent') return <Navigate to="/parent" replace />;
   return <Navigate to="/dashboard" replace />;
 }
 
@@ -58,8 +60,14 @@ export default function App() {
           } />
 
           <Route path="/dashboard" element={
-            <ProtectedRoute allowRoles={['learner', 'parent']}>
+            <ProtectedRoute allowRoles={['learner']}>
               <Dashboard />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/parent" element={
+            <ProtectedRoute allowRoles={['parent']}>
+              <ParentDashboard />
             </ProtectedRoute>
           } />
 

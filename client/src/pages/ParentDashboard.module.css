@@ -1,0 +1,57 @@
+.page { min-height: 100vh; background: var(--bg); }
+
+.main { max-width: 680px; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
+
+.header { margin-bottom: 1.5rem; }
+.title { font-size: 1.5rem; font-weight: 800; color: var(--text); margin: 0 0 0.2rem; }
+.sub { color: var(--text-muted); font-size: 0.9rem; margin: 0; }
+
+.childTabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.childTab {
+  padding: 0.5rem 1.25rem; border-radius: 2rem;
+  border: 1.5px solid var(--border);
+  background: var(--bg); color: var(--text-muted);
+  font-size: 0.875rem; font-weight: 600; cursor: pointer;
+  transition: all 0.15s;
+}
+.childTabActive { border-color: var(--accent); background: var(--accent-light); color: var(--accent); }
+
+.statsRow {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem; margin-bottom: 2rem;
+}
+.stat {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1rem 1.25rem;
+  display: flex; flex-direction: column; gap: 0.25rem;
+}
+.statNum { font-size: 1.1rem; font-weight: 800; color: var(--text); }
+.statLabel { font-size: 0.75rem; color: var(--text-muted); }
+
+.sectionTitle { font-size: 1rem; font-weight: 700; color: var(--text); margin: 0 0 0.875rem; }
+
+.topicList { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2rem; }
+.topicRow { display: flex; align-items: center; gap: 0.875rem; }
+.topicEmoji { font-size: 1.5rem; flex-shrink: 0; }
+.topicInfo { flex: 1; }
+.topicTop { display: flex; justify-content: space-between; margin-bottom: 0.3rem; }
+.topicLabel { font-size: 0.875rem; font-weight: 600; color: var(--text); }
+.topicPct { font-size: 0.75rem; color: var(--text-muted); }
+.bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.barFill { height: 100%; border-radius: 3px; transition: width 0.4s ease; }
+
+.sessionList { display: flex; flex-direction: column; gap: 0.5rem; }
+.session {
+  display: flex; align-items: center; gap: 0.75rem;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 0.75rem 1rem;
+}
+.sessionDate { font-size: 0.75rem; color: var(--text-muted); flex-shrink: 0; min-width: 60px; }
+.sessionTitle { flex: 1; font-size: 0.875rem; font-weight: 600; color: var(--text); }
+.sessionDur { font-size: 0.75rem; color: var(--text-muted); flex-shrink: 0; }
+
+.empty {
+  text-align: center; padding: 3rem 1rem;
+  display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
+  color: var(--text-muted); font-size: 0.9rem;
+}

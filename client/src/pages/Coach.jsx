@@ -102,7 +102,14 @@ export default function Coach() {
       setMessages(final);
       if (user) {
         await saveConversationHistory(user.id, moduleId, final);
-        if (final.length >= 6) setModuleProgress(user.id, moduleId, Math.min(100, final.length * 8));
+        if (final.length >= 6) {
+          // Progression basée sur la qualité : longueur moyenne des messages utilisateur
+          const userMsgs = final.filter(m => m.role === 'user');
+          const avgLen = userMsgs.reduce((s, m) => s + m.content.split(' ').length, 0) / userMsgs.length;
+          const qualityBonus = Math.min(1.5, avgLen / 8); // max 1.5x si messages riches
+          const pct = Math.min(100, Math.round(userMsgs.length * 10 * qualityBonus));
+          setModuleProgress(user.id, moduleId, pct);
+        }
       }
       if (voiceModeRef.current) {
         setVS(VS.SPEAKING);

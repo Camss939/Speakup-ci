@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../lib/AuthContext';
 import { signOut } from '../lib/auth';
-import { getProgress, getSessions, computeStreak } from '../lib/db';
+import { getProgress, getSessions, computeStreak, getDailyChallengeDone, setDailyChallengeDone } from '../lib/db';
 import topics from '../data/topics.json';
 import expressions from '../data/dailyExpressions.json';
 import challenges from '../data/dailyChallenges.json';
@@ -27,11 +27,9 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (!user) return;
-    Promise.all([getProgress(user.id), getSessions(user.id)]).then(([p, s]) => {
-      setProgress(p); setSessions(s); setLoading(false);
+    Promise.all([getProgress(user.id), getSessions(user.id), getDailyChallengeDone(user.id)]).then(([p, s, done]) => {
+      setProgress(p); setSessions(s); setChallengeDone(done); setLoading(false);
     });
-    const key = `challenge_done_${new Date().toDateString()}_${user.id}`;
-    setChallengeDone(!!localStorage.getItem(key));
   }, [user]);
 
   async function handleSignOut() {
@@ -39,9 +37,8 @@ export default function Dashboard() {
     navigate('/login');
   }
 
-  function handleChallengeStart() {
-    const key = `challenge_done_${new Date().toDateString()}_${user.id}`;
-    localStorage.setItem(key, '1');
+  async function handleChallengeStart() {
+    await setDailyChallengeDone(user.id);
     setChallengeDone(true);
     const topic = topics.find(t => t.id === challenge.topic);
     if (topic) navigate(`/topics/${topic.id}`);
