@@ -205,18 +205,16 @@ export default function Coach() {
             const next = !autoMode;
             setAutoMode(next);
             autoModeRef.current = next;
-            if (next && !loading && !speaking) setTimeout(() => startListening(), 300);
             if (!next) { stopSpeaking(); setSpeaking(false); }
-          }}
-          disabled={loading}>
-          {autoMode ? '🔴 Mode conversation actif' : '🎙️ Mode conversation'}
+          }}>
+          {autoMode ? '🔴 Conversation active' : '🎙️ Mode conversation'}
         </button>
       </div>
       <div className={styles.controls}>
         <button
           className={`${styles.mic} ${listening ? styles.active : ''} ${speaking ? styles.speaking : ''}`}
           onClick={startListening}
-          disabled={loading || autoMode} aria-label={listening ? "Arrêter" : "Parler"}>
+          disabled={loading || speaking} aria-label={listening ? "Arrêter" : "Parler"}>
           {listening ? '⏹️' : speaking ? '🔊' : '🎤'}
         </button>
         <form className={styles.textForm} onSubmit={handleSend}>
@@ -227,7 +225,10 @@ export default function Coach() {
         </form>
       </div>
       <p className={styles.hint}>
-        {autoMode ? '🔴 Conversation automatique — parle après le coach' : '🎤 Commencer · ⏹️ Arrêter · ou tape en dessous'}
+        {autoMode && speaking ? '🔊 Coach parle...' :
+         autoMode && listening ? '🎤 Parle maintenant, puis ⏹️' :
+         autoMode ? '🎙️ Actif — clique 🎤 pour parler' :
+         '🎤 Commencer · ⏹️ Arrêter · ou tape en dessous'}
       </p>
     </div>
   );
