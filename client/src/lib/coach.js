@@ -22,20 +22,36 @@ export async function sendMessage(userId, messages, topicContext) {
   return data.text;
 }
 
-export function speak(text, onEnd) {
-  if (!window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
-  const utter = new SpeechSynthesisUtterance(text);
-  utter.lang = 'en-US'; utter.rate = 0.92; utter.pitch = 1;
-  const voices = window.speechSynthesis.getVoices();
-  const preferred = voices.find(v =>
-    v.name.includes('Samantha') || v.name.includes('Google US English') || v.name.includes('Karen')
-  );
-  if (preferred) utter.voice = preferred;
-  if (onEnd) utter.onend = onEnd;
-  window.speechSynthesis.speak(utter);
+let currentAudio = null;
+
+export async function speak(text, onEnd, accessToken) {
+  stopSpeaking();
+  try {
+    const res = await fetch(`${API}/api/speak`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ text }),
+    });
+    if (!res.ok) throw new Error('TTS failed');
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    currentAudio = new Audio(url);
+    currentAudio.onended = () => { URL.revokeObjectURL(url); onEnd?.(); };
+    currentAudio.onerror = () => { onEnd?.(); };
+    await currentAudio.play();
+  } catch {
+    // fallback to browser TTS
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'en-US'; utter.rate = 0.92;
+    if (onEnd) utter.onend = onEnd;
+    window.speechSynthesis?.speak(utter);
+  }
 }
 
 export function stopSpeaking() {
+  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
   window.speechSynthesis?.cancel();
 }

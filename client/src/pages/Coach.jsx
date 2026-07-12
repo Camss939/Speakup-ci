@@ -31,7 +31,9 @@ export default function Coach() {
   const [speaking, setSpeaking] = useState(false);
   const [error, setError] = useState(null);
   const [ready, setReady] = useState(false);
+  const [autoMode, setAutoMode] = useState(false);
   const [sessionStart] = useState(Date.now());
+  const autoModeRef = useRef(false);
 
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
@@ -88,7 +90,11 @@ export default function Coach() {
         if (final.length >= 6) setModuleProgress(user.id, moduleId, Math.min(100, final.length * 8));
       }
       setSpeaking(true);
-      speak(text, () => setSpeaking(false));
+      const { data: { session } } = await (await import('../lib/supabase.js')).supabase.auth.getSession();
+      speak(text, () => {
+        setSpeaking(false);
+        if (autoModeRef.current) setTimeout(() => startListening(), 500);
+      }, session?.access_token);
     } catch {
       setError('Le coach est indisponible. Vérifie ta connexion.');
     } finally {
@@ -189,11 +195,25 @@ export default function Coach() {
         <div ref={bottomRef} />
       </div>
 
+      <div className={styles.autoModeRow}>
+        <button
+          className={`${styles.autoBtn} ${autoMode ? styles.autoBtnActive : ''}`}
+          onClick={() => {
+            const next = !autoMode;
+            setAutoMode(next);
+            autoModeRef.current = next;
+            if (next && !loading && !speaking) setTimeout(() => startListening(), 300);
+            if (!next) { stopSpeaking(); setSpeaking(false); }
+          }}
+          disabled={loading}>
+          {autoMode ? '🔴 Mode conversation actif' : '🎙️ Mode conversation'}
+        </button>
+      </div>
       <div className={styles.controls}>
         <button
           className={`${styles.mic} ${listening ? styles.active : ''} ${speaking ? styles.speaking : ''}`}
           onClick={startListening}
-          disabled={loading} aria-label={listening ? "Arrêter" : "Parler"}>
+          disabled={loading || autoMode} aria-label={listening ? "Arrêter" : "Parler"}>
           {listening ? '⏹️' : speaking ? '🔊' : '🎤'}
         </button>
         <form className={styles.textForm} onSubmit={handleSend}>
@@ -203,7 +223,9 @@ export default function Coach() {
           <button className={styles.sendBtn} type="submit" disabled={!input.trim() || loading}>Envoyer</button>
         </form>
       </div>
-      <p className={styles.hint}>🎤 Commencer · ⏹️ Arrêter et envoyer · ou tape en dessous</p>
+      <p className={styles.hint}>
+        {autoMode ? '🔴 Conversation automatique — parle après le coach' : '🎤 Commencer · ⏹️ Arrêter · ou tape en dessous'}
+      </p>
     </div>
   );
 }

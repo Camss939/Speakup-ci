@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { chat } from './routes/chat.js';
 import { transcribe } from './routes/transcribe.js';
+import { speak } from './routes/speak.js';
 import { getAllUsers, patchUser, removeUser } from './routes/admin.js';
 
 dotenv.config();
@@ -25,6 +26,7 @@ app.use(express.json());
 
 app.post('/api/chat', chat);
 app.post('/api/transcribe', transcribe);
+app.post('/api/speak', speak);
 app.get('/api/admin/users', getAllUsers);
 app.patch('/api/admin/users/:id', patchUser);
 app.delete('/api/admin/users/:id', removeUser);

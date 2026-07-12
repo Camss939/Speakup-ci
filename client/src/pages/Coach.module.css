@@ -175,6 +175,38 @@
   font-weight: 500;
 }
 
+.autoModeRow {
+  padding: 0.5rem 1.25rem 0;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+}
+
+.autoBtn {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border-radius: 1rem;
+  border: 2px solid var(--border);
+  background: var(--bg);
+  color: var(--text-muted);
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.autoBtnActive {
+  border-color: #ef4444;
+  background: #fef2f2;
+  color: #dc2626;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.3); }
+  50% { box-shadow: 0 0 0 6px rgba(239,68,68,0); }
+}
+
 .controls {
   display: flex;
   align-items: center;
