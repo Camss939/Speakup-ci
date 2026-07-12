@@ -23,57 +23,40 @@ export async function sendMessage(userId, messages, topicContext) {
 }
 
 let currentAudio = null;
-let fallbackTimer = null;
 
-export function speak(text, onEnd) {
+export async function speak(text, onEnd) {
   stopSpeaking();
-  if (!window.speechSynthesis) { onEnd?.(); return; }
-
-  const words = text.split(' ').length;
-  const estimatedMs = Math.max(4000, words * 450);
-  fallbackTimer = setTimeout(() => { onEnd?.(); }, estimatedMs);
-
-  const done = () => {
-    clearTimeout(fallbackTimer);
-    fallbackTimer = null;
-    onEnd?.();
-  };
-
-  const doSpeak = () => {
+  try {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) throw new Error('no session');
+    const res = await fetch(`${API}/api/speak`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${session.access_token}`,
+      },
+      body: JSON.stringify({ text }),
+    });
+    if (!res.ok) throw new Error('TTS failed');
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    currentAudio = new Audio(url);
+    currentAudio.onended = () => { URL.revokeObjectURL(url); onEnd?.(); };
+    currentAudio.onerror = () => { URL.revokeObjectURL(url); onEnd?.(); };
+    await currentAudio.play();
+  } catch {
+    // Fallback vers browser TTS si Groq TTS échoue
+    if (!window.speechSynthesis) { onEnd?.(); return; }
     const utter = new SpeechSynthesisUtterance(text);
     utter.lang = 'en-US';
     utter.rate = 0.9;
-    utter.pitch = 1;
-    const voices = window.speechSynthesis.getVoices();
-    const preferred = voices.find(v =>
-      v.lang.startsWith('en') && (
-        v.name.includes('Samantha') ||
-        v.name.includes('Google US') ||
-        v.name.includes('Karen') ||
-        v.name.includes('Daniel') ||
-        v.name.includes('Moira')
-      )
-    );
-    if (preferred) utter.voice = preferred;
-    utter.onend = done;
-    utter.onerror = done;
+    utter.onend = () => onEnd?.();
+    utter.onerror = () => onEnd?.();
     window.speechSynthesis.speak(utter);
-  };
-
-  const voices = window.speechSynthesis.getVoices();
-  if (voices.length > 0) {
-    doSpeak();
-  } else {
-    window.speechSynthesis.onvoiceschanged = () => {
-      window.speechSynthesis.onvoiceschanged = null;
-      doSpeak();
-    };
   }
 }
 
 export function stopSpeaking() {
-  clearTimeout(fallbackTimer);
-  fallbackTimer = null;
   if (currentAudio) { currentAudio.pause(); currentAudio = null; }
   window.speechSynthesis?.cancel();
 }

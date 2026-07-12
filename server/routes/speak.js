@@ -27,8 +27,8 @@ export async function speak(req, res) {
 
   try {
     const audio = await getGroq().audio.speech.create({
-      model: 'distil-whisper-large-v3-en',
-      voice: 'Arista-PlayAI',
+      model: 'canopylabs/orpheus-v1-english',
+      voice: 'tara',
       input: text,
       response_format: 'wav',
     });
