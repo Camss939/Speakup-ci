@@ -25,7 +25,7 @@ app.use(cors({
 app.use(express.json());
 
 app.post('/api/chat', chat);
-app.post('/api/transcribe', transcribe);
+app.post('/api/transcribe', express.raw({ type: '*/*', limit: '10mb' }), transcribe);
 app.post('/api/speak', speak);
 app.get('/api/admin/users', getAllUsers);
 app.patch('/api/admin/users/:id', patchUser);

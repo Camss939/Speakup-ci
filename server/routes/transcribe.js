@@ -1,6 +1,5 @@
 import Groq from 'groq-sdk';
 import { createClient } from '@supabase/supabase-js';
-import { Readable } from 'stream';
 
 let _groq, _supabase;
 function getGroq() {
@@ -12,25 +11,24 @@ function getSupabase() {
   return _supabase;
 }
 
-async function getUserProfile(authHeader) {
+async function getUser(authHeader) {
   if (!authHeader?.startsWith('Bearer ')) return null;
   const token = authHeader.slice(7);
   const { data: { user }, error } = await getSupabase().auth.getUser(token);
-  if (error || !user) return null;
-  return user;
+  return error ? null : user;
 }
 
 export async function transcribe(req, res) {
-  const user = await getUserProfile(req.headers.authorization);
+  const user = await getUser(req.headers.authorization);
   if (!user) return res.status(401).json({ error: 'Not authenticated' });
 
   try {
-    const chunks = [];
-    req.on('data', chunk => chunks.push(chunk));
-    await new Promise(resolve => req.on('end', resolve));
-    const buffer = Buffer.concat(chunks);
+    // req.body is a Buffer thanks to express.raw() middleware
+    const buffer = req.body;
+    if (!buffer || buffer.length < 500) {
+      return res.status(400).json({ error: 'Audio too short' });
+    }
 
-    // Create a File-like object for Groq
     const file = new File([buffer], 'audio.webm', { type: 'audio/webm' });
 
     const transcription = await getGroq().audio.transcriptions.create({
@@ -39,9 +37,9 @@ export async function transcribe(req, res) {
       language: 'en',
     });
 
-    res.json({ text: transcription.text });
+    res.json({ text: transcription.text || '' });
   } catch (err) {
     console.error('[transcribe]', err);
-    res.status(500).json({ error: 'Transcription failed' });
+    res.status(500).json({ error: 'Transcription failed: ' + err.message });
   }
 }

@@ -28,7 +28,7 @@ export async function speak(req, res) {
   try {
     const audio = await getGroq().audio.speech.create({
       model: 'playai-tts',
-      voice: 'Celeste-PlayAI',
+      voice: 'Fritz-PlayAI',
       input: text,
       response_format: 'wav',
     });
@@ -38,7 +38,7 @@ export async function speak(req, res) {
     res.setHeader('Content-Length', buffer.length);
     res.send(buffer);
   } catch (err) {
-    console.error('[speak]', err);
+    console.error('[speak]', err.message);
     res.status(500).json({ error: 'TTS failed' });
   }
 }
