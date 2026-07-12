@@ -98,36 +98,31 @@ export default function Coach() {
 
   function startListening() {
     if (!SpeechRecognition) {
-      setError("Ton navigateur ne supporte pas la reconnaissance vocale. Utilise Chrome ou Safari et la zone de texte.");
+      setError("Reconnaissance vocale non supportée. Utilise Chrome sur Android ou Safari sur iPhone.");
       return;
     }
     if (listening) return;
-    stopSpeaking(); setSpeaking(false);
+    stopSpeaking(); setSpeaking(false); setError(null);
     const recog = new SpeechRecognition();
     recogRef.current = recog;
     recog.lang = 'en-US'; recog.continuous = false; recog.interimResults = false;
-    recog.onstart = () => { setListening(true); setError(null); };
-    recog.onend = () => setListening(false);
+    let gotResult = false;
+    recog.onstart = () => setListening(true);
     recog.onresult = e => {
+      gotResult = true;
       const t = e.results[0][0].transcript;
       if (t.trim()) replyAsCoach(t.trim());
     };
+    recog.onend = () => {
+      setListening(false);
+      if (!gotResult) setError("Aucune voix détectée. Réessaie en parlant plus fort.");
+    };
     recog.onerror = (e) => {
       setListening(false);
-      if (e.error === 'not-allowed') setError("Accès au micro refusé. Autorise le micro dans les paramètres de ton navigateur.");
-      else if (e.error === 'no-speech') setError("Aucune voix détectée. Réessaie.");
+      if (e.error === 'not-allowed') setError("Micro refusé. Autorise le micro dans les paramètres du navigateur.");
+      else if (e.error !== 'no-speech') setError("Erreur micro : " + e.error);
     };
     try { recog.start(); } catch { setListening(false); }
-  }
-
-  function stopListening() {
-    if (recogRef.current) { recogRef.current.stop(); }
-    setListening(false);
-  }
-
-  function toggleListening() {
-    if (listening) stopListening();
-    else startListening();
   }
 
   function handleSend(e) {
@@ -184,9 +179,9 @@ export default function Coach() {
       <div className={styles.controls}>
         <button
           className={`${styles.mic} ${listening ? styles.active : ''} ${speaking ? styles.speaking : ''}`}
-          onClick={toggleListening}
+          onClick={startListening}
           disabled={loading} aria-label={listening ? "Arrêter" : "Parler"}>
-          {listening ? '🔴 Écoute...' : speaking ? '🔊' : '🎤'}
+          {listening ? '🔴' : speaking ? '🔊' : '🎤'}
         </button>
         <form className={styles.textForm} onSubmit={handleSend}>
           <input className={styles.textInput} value={input}
@@ -195,7 +190,7 @@ export default function Coach() {
           <button className={styles.sendBtn} type="submit" disabled={!input.trim() || loading}>Envoyer</button>
         </form>
       </div>
-      <p className={styles.hint}>Clique 🎤 pour parler, reclique pour envoyer — ou tape en dessous</p>
+      <p className={styles.hint}>Clique 🎤, parle, puis attends — ou tape en dessous</p>
     </div>
   );
 }
