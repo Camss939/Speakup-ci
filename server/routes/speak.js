@@ -23,7 +23,7 @@ export async function speak(req, res) {
 
   try {
     const tts = new MsEdgeTTS();
-    await tts.setMetadata('en-US-AriaNeural', OUTPUT_FORMAT.AUDIO_24KHZ_48KBITRATE_MONO_MP3);
+    await tts.setMetadata('en-US-JennyNeural', OUTPUT_FORMAT.AUDIO_24KHZ_48KBITRATE_MONO_MP3);
 
     const chunks = [];
     await new Promise((resolve, reject) => {
