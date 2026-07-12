@@ -25,12 +25,12 @@ export async function sendMessage(userId, messages, topicContext) {
 let currentAudio = null;
 let fallbackTimer = null;
 
-export async function speak(text, onEnd, accessToken) {
+export function speak(text, onEnd) {
   stopSpeaking();
+  if (!window.speechSynthesis) { onEnd?.(); return; }
 
-  // Fallback timer — always calls onEnd after estimated duration + buffer
   const words = text.split(' ').length;
-  const estimatedMs = Math.max(4000, words * 400);
+  const estimatedMs = Math.max(4000, words * 450);
   fallbackTimer = setTimeout(() => { onEnd?.(); }, estimatedMs);
 
   const done = () => {
@@ -39,41 +39,35 @@ export async function speak(text, onEnd, accessToken) {
     onEnd?.();
   };
 
-  try {
-    const res = await fetch(`${API}/api/speak`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({ text }),
-    });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.error || `HTTP ${res.status}`);
-    }
-    const blob = await res.blob();
-    const url = URL.createObjectURL(blob);
-    currentAudio = new Audio(url);
-    currentAudio.onended = () => { URL.revokeObjectURL(url); done(); };
-    currentAudio.onerror = (e) => {
-      console.error('[speak] audio play error:', e);
-      URL.revokeObjectURL(url);
-      done();
-    };
-    await currentAudio.play();
-  } catch (err) {
-    console.error('[speak] TTS error:', err.message);
-    // fallback to browser TTS
+  const doSpeak = () => {
     const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = 'en-US'; utter.rate = 0.92;
+    utter.lang = 'en-US';
+    utter.rate = 0.9;
+    utter.pitch = 1;
+    const voices = window.speechSynthesis.getVoices();
+    const preferred = voices.find(v =>
+      v.lang.startsWith('en') && (
+        v.name.includes('Samantha') ||
+        v.name.includes('Google US') ||
+        v.name.includes('Karen') ||
+        v.name.includes('Daniel') ||
+        v.name.includes('Moira')
+      )
+    );
+    if (preferred) utter.voice = preferred;
     utter.onend = done;
     utter.onerror = done;
-    if (window.speechSynthesis) {
-      window.speechSynthesis.speak(utter);
-    } else {
-      done();
-    }
+    window.speechSynthesis.speak(utter);
+  };
+
+  const voices = window.speechSynthesis.getVoices();
+  if (voices.length > 0) {
+    doSpeak();
+  } else {
+    window.speechSynthesis.onvoiceschanged = () => {
+      window.speechSynthesis.onvoiceschanged = null;
+      doSpeak();
+    };
   }
 }
 

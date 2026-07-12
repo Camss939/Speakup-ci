@@ -93,11 +93,10 @@ export default function Coach() {
         if (final.length >= 6) setModuleProgress(user.id, moduleId, Math.min(100, final.length * 8));
       }
       setSpeaking(true);
-      const { data: { session } } = await (await import('../lib/supabase.js')).supabase.auth.getSession();
       speak(text, () => {
         setSpeaking(false);
         if (autoModeRef.current) setTimeout(() => startListening(), 500);
-      }, session?.access_token);
+      });
     } catch {
       setError('Le coach est indisponible. Vérifie ta connexion.');
     } finally {

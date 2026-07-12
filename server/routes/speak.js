@@ -27,8 +27,8 @@ export async function speak(req, res) {
 
   try {
     const audio = await getGroq().audio.speech.create({
-      model: 'playai-tts',
-      voice: 'Fritz-PlayAI',
+      model: 'distil-whisper-large-v3-en',
+      voice: 'Arista-PlayAI',
       input: text,
       response_format: 'wav',
     });
