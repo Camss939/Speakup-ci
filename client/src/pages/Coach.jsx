@@ -17,7 +17,6 @@ function findModule(moduleId) {
   return null;
 }
 
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
 export default function Coach() {
   const { moduleId } = useParams();
@@ -34,7 +33,8 @@ export default function Coach() {
   const [ready, setReady] = useState(false);
   const [sessionStart] = useState(Date.now());
 
-  const recogRef = useRef(null);
+  const mediaRecorderRef = useRef(null);
+  const audioChunksRef = useRef([]);
   const bottomRef = useRef(null);
   const initialized = useRef(false);
 
@@ -60,7 +60,7 @@ export default function Coach() {
   useEffect(() => {
     return () => {
       stopSpeaking();
-      if (recogRef.current) recogRef.current.abort();
+      if (mediaRecorderRef.current?.state === 'recording') mediaRecorderRef.current.stop();
       const duration = Math.round((Date.now() - sessionStart) / 1000);
       if (messages.length > 0 && duration > 20 && user) {
         addSession(user.id, { moduleId, moduleTitle: found?.mod.title || moduleId, duration });
@@ -96,33 +96,46 @@ export default function Coach() {
     }
   }
 
-  function startListening() {
-    if (!SpeechRecognition) {
-      setError("Reconnaissance vocale non supportée. Utilise Chrome sur Android ou Safari sur iPhone.");
+  async function startListening() {
+    if (listening) {
+      // Stop recording and send
+      mediaRecorderRef.current?.stop();
       return;
     }
-    if (listening) return;
     stopSpeaking(); setSpeaking(false); setError(null);
-    const recog = new SpeechRecognition();
-    recogRef.current = recog;
-    recog.lang = 'en-US'; recog.continuous = false; recog.interimResults = false;
-    let gotResult = false;
-    recog.onstart = () => setListening(true);
-    recog.onresult = e => {
-      gotResult = true;
-      const t = e.results[0][0].transcript;
-      if (t.trim()) replyAsCoach(t.trim());
-    };
-    recog.onend = () => {
-      setListening(false);
-      if (!gotResult) setError("Aucune voix détectée. Réessaie en parlant plus fort.");
-    };
-    recog.onerror = (e) => {
-      setListening(false);
-      if (e.error === 'not-allowed') setError("Micro refusé. Autorise le micro dans les paramètres du navigateur.");
-      else if (e.error !== 'no-speech') setError("Erreur micro : " + e.error);
-    };
-    try { recog.start(); } catch { setListening(false); }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      audioChunksRef.current = [];
+      const mr = new MediaRecorder(stream);
+      mediaRecorderRef.current = mr;
+      mr.ondataavailable = e => { if (e.data.size > 0) audioChunksRef.current.push(e.data); };
+      mr.onstop = async () => {
+        stream.getTracks().forEach(t => t.stop());
+        setListening(false);
+        const blob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+        if (blob.size < 1000) { setError("Trop court. Parle un peu plus longtemps."); return; }
+        setLoading(true);
+        try {
+          const { data: { session } } = await (await import('../lib/supabase.js')).supabase.auth.getSession();
+          const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/transcribe`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${session.access_token}`, 'Content-Type': 'audio/webm' },
+            body: blob,
+          });
+          const data = await res.json();
+          if (data.text?.trim()) replyAsCoach(data.text.trim());
+          else setError("Aucun texte détecté. Réessaie.");
+        } catch {
+          setError("Erreur de transcription. Vérifie ta connexion.");
+        } finally {
+          setLoading(false);
+        }
+      };
+      mr.start();
+      setListening(true);
+    } catch {
+      setError("Micro refusé. Autorise le micro dans les paramètres du navigateur.");
+    }
   }
 
   function handleSend(e) {
@@ -181,7 +194,7 @@ export default function Coach() {
           className={`${styles.mic} ${listening ? styles.active : ''} ${speaking ? styles.speaking : ''}`}
           onClick={startListening}
           disabled={loading} aria-label={listening ? "Arrêter" : "Parler"}>
-          {listening ? '🔴' : speaking ? '🔊' : '🎤'}
+          {listening ? '⏹️' : speaking ? '🔊' : '🎤'}
         </button>
         <form className={styles.textForm} onSubmit={handleSend}>
           <input className={styles.textInput} value={input}
@@ -190,7 +203,7 @@ export default function Coach() {
           <button className={styles.sendBtn} type="submit" disabled={!input.trim() || loading}>Envoyer</button>
         </form>
       </div>
-      <p className={styles.hint}>Clique 🎤, parle, puis attends — ou tape en dessous</p>
+      <p className={styles.hint}>🎤 Commencer · ⏹️ Arrêter et envoyer · ou tape en dessous</p>
     </div>
   );
 }
