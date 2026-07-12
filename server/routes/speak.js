@@ -26,19 +26,21 @@ export async function speak(req, res) {
   if (!text) return res.status(400).json({ error: 'No text provided' });
 
   try {
+    console.log('[speak] calling Groq TTS for text length:', text.length);
     const audio = await getGroq().audio.speech.create({
       model: 'canopylabs/orpheus-v1-english',
       voice: 'leah',
       input: text,
-      response_format: 'wav',
+      response_format: 'mp3',
     });
 
     const buffer = Buffer.from(await audio.arrayBuffer());
-    res.setHeader('Content-Type', 'audio/wav');
+    console.log('[speak] success, buffer size:', buffer.length);
+    res.setHeader('Content-Type', 'audio/mpeg');
     res.setHeader('Content-Length', buffer.length);
     res.send(buffer);
   } catch (err) {
-    console.error('[speak] full error:', JSON.stringify(err, null, 2));
+    console.error('[speak] ERROR:', err.message, JSON.stringify(err?.error ?? {}, null, 2));
     res.status(500).json({ error: err.message || 'TTS failed' });
   }
 }
