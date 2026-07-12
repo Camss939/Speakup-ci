@@ -38,7 +38,7 @@ export async function speak(req, res) {
     res.setHeader('Content-Length', buffer.length);
     res.send(buffer);
   } catch (err) {
-    console.error('[speak]', err.message);
-    res.status(500).json({ error: 'TTS failed' });
+    console.error('[speak] full error:', JSON.stringify(err, null, 2));
+    res.status(500).json({ error: err.message || 'TTS failed' });
   }
 }
