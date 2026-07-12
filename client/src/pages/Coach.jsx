@@ -205,6 +205,14 @@ export default function Coach() {
             setAutoMode(next);
             autoModeRef.current = next;
             if (!next) { stopSpeaking(); setSpeaking(false); }
+            else {
+              // Unlock browser audio on user gesture
+              const silence = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA');
+              silence.play().catch(() => {});
+              window.speechSynthesis?.cancel();
+              const test = new SpeechSynthesisUtterance('');
+              window.speechSynthesis?.speak(test);
+            }
           }}>
           {autoMode ? '🔴 Conversation active' : '🎙️ Mode conversation'}
         </button>
