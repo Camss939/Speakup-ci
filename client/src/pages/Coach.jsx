@@ -39,6 +39,7 @@ export default function Coach() {
   const audioChunksRef = useRef([]);
   const bottomRef = useRef(null);
   const initialized = useRef(false);
+  const replyAsCoachRef = useRef(null);
 
   useEffect(() => {
     if (!user || initialized.current) return;
@@ -55,7 +56,7 @@ export default function Coach() {
 
   useEffect(() => {
     if (ready && messages.length === 0 && !loading) {
-      replyAsCoach("Hi! I'm ready to practice. Please start!");
+      replyAsCoachRef.current?.("Hi! I'm ready to practice. Please start!");
     }
   }, [ready]);
 
@@ -73,6 +74,8 @@ export default function Coach() {
   const topicContext = found
     ? `Topic: ${found.topic.label} — Module: "${found.mod.title}"\nVocab to use: ${found.mod.vocab.join(', ')}\nCoach direction: ${found.mod.coachSeed}`
     : null;
+
+  replyAsCoachRef.current = replyAsCoach;
 
   async function replyAsCoach(userText) {
     const userMsg = { role: 'user', content: userText };
@@ -129,7 +132,7 @@ export default function Coach() {
             body: blob,
           });
           const data = await res.json();
-          if (data.text?.trim()) replyAsCoach(data.text.trim());
+          if (data.text?.trim()) replyAsCoachRef.current(data.text.trim());
           else setError("Aucun texte détecté. Réessaie.");
         } catch {
           setError("Erreur de transcription. Vérifie ta connexion.");
