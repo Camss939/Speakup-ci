@@ -48,14 +48,22 @@ export async function speak(text, onEnd, accessToken) {
       },
       body: JSON.stringify({ text }),
     });
-    if (!res.ok) throw new Error('TTS failed');
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || `HTTP ${res.status}`);
+    }
     const blob = await res.blob();
     const url = URL.createObjectURL(blob);
     currentAudio = new Audio(url);
     currentAudio.onended = () => { URL.revokeObjectURL(url); done(); };
-    currentAudio.onerror = () => { URL.revokeObjectURL(url); done(); };
+    currentAudio.onerror = (e) => {
+      console.error('[speak] audio play error:', e);
+      URL.revokeObjectURL(url);
+      done();
+    };
     await currentAudio.play();
-  } catch {
+  } catch (err) {
+    console.error('[speak] TTS error:', err.message);
     // fallback to browser TTS
     const utter = new SpeechSynthesisUtterance(text);
     utter.lang = 'en-US'; utter.rate = 0.92;
