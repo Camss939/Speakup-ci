@@ -237,11 +237,14 @@ export default function Coach() {
       });
       if (res.ok) {
         const data = await res.json();
-        // Use real score for progression
         const avgScore = Math.round(
           (data.scores.grammar + data.scores.vocabulary + data.scores.fluency + data.scores.confidence) / 4
         );
-        if (user) setModuleProgress(user.id, moduleId, Math.min(100, avgScore));
+        // Cap progression based on session depth: need many exchanges to reach 100%
+        const msgCount = msgs.filter(m => m.role === 'user').length;
+        const cap = msgCount < 5 ? 30 : msgCount < 8 ? 55 : msgCount < 12 ? 75 : 100;
+        const finalPct = Math.min(cap, avgScore);
+        if (user) setModuleProgress(user.id, moduleId, finalPct);
         setEvaluation(data);
       } else {
         navigate(`/topics/${found?.topic.id || ''}`);

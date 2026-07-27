@@ -175,26 +175,20 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            {/* Recent registrations */}
-            <div className={styles.cockpitCard}>
-              <h2 className={styles.cockpitCardTitle}>Derniers inscrits</h2>
-              <div className={styles.userList}>
-                {[...learners, ...parents].slice(0, 8).map(u => (
-                  <div key={u.id} className={styles.userCard}>
-                    <div className={styles.userInfo}>
-                      <span className={styles.userName}>{u.full_name}</span>
-                      <span className={styles.userMeta}>
-                        {u.role === 'parent' ? '👨‍👩‍👦 Parent' : `🎓 ${LEVEL_LABELS[u.level] || '—'}`}
-                        {' · '}{u.approved ? '✅ Actif' : '⏳ En attente'}
-                      </span>
+            {/* Pending alert */}
+            {pending.length > 0 && (
+              <div className={styles.cockpitCard} style={{ borderColor: 'var(--accent)' }}>
+                <h2 className={styles.cockpitCardTitle}>⏳ {pending.length} compte{pending.length > 1 ? 's' : ''} en attente d'approbation</h2>
+                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  {pending.map(u => (
+                    <div key={u.id} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '8px', padding: '0.4rem 0.75rem' }}>
+                      <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text)' }}>{u.full_name}</span>
+                      <button className={styles.approveBtn} onClick={() => approve(u.id)}>✓</button>
                     </div>
-                    {!u.approved && (
-                      <button className={styles.approveBtn} onClick={() => approve(u.id)}>✓ Approuver</button>
-                    )}
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </section>
         )}
 

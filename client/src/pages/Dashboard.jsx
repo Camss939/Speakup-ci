@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../lib/AuthContext';
 import { signOut } from '../lib/auth';
 import { getProgress, getSessions, computeStreak, getDailyChallengeDone, setDailyChallengeDone } from '../lib/db';
-import { speak } from '../lib/coach';
 import topics from '../data/topics.json';
 import expressions from '../data/dailyExpressions.json';
 import challenges from '../data/dailyChallenges.json';
@@ -22,6 +21,7 @@ export default function Dashboard() {
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [challengeDone, setChallengeDone] = useState(false);
+  const [speaking, setSpeaking] = useState(false);
 
   const expression = getDailyItem(expressions);
   const challenge = getDailyItem(challenges);
@@ -36,6 +36,19 @@ export default function Dashboard() {
   async function handleSignOut() {
     await signOut();
     navigate('/login');
+  }
+
+  function handleSpeakExpression() {
+    if (speaking) { window.speechSynthesis?.cancel(); setSpeaking(false); return; }
+    const text = `${expression.expression}. ${expression.example}`;
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'en-US';
+    utter.rate = 0.85;
+    utter.onstart = () => setSpeaking(true);
+    utter.onend = () => setSpeaking(false);
+    utter.onerror = () => setSpeaking(false);
+    window.speechSynthesis?.cancel();
+    window.speechSynthesis?.speak(utter);
   }
 
   async function handleChallengeStart() {
@@ -94,7 +107,17 @@ export default function Dashboard() {
               <div className={styles.expressionWord}>"{expression.expression}"</div>
               <div className={styles.expressionMeaning}>{expression.meaning}</div>
             </div>
-            <span style={{fontSize:'1.4rem', cursor:'pointer'}} title="Écouter" onClick={() => speak(`${expression.expression}. ${expression.example}`)}>🔊</span>
+            <button
+              onClick={handleSpeakExpression}
+              title={speaking ? 'Arrêter' : 'Écouter'}
+              style={{
+                fontSize: '1.4rem', background: 'none', border: 'none',
+                cursor: 'pointer', padding: '0.2rem',
+                opacity: speaking ? 1 : 0.7,
+                animation: speaking ? 'pulse 1s infinite' : 'none',
+              }}>
+              {speaking ? '🔉' : '🔊'}
+            </button>
           </div>
           <div className={styles.expressionExample}>
             💬 <em>"{expression.example}"</em>
