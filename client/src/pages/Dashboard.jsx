@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../lib/AuthContext';
 import { signOut } from '../lib/auth';
 import { getProgress, getSessions, computeStreak, getDailyChallengeDone, setDailyChallengeDone } from '../lib/db';
+import { speak } from '../lib/coach';
 import topics from '../data/topics.json';
 import expressions from '../data/dailyExpressions.json';
 import challenges from '../data/dailyChallenges.json';
@@ -93,7 +94,7 @@ export default function Dashboard() {
               <div className={styles.expressionWord}>"{expression.expression}"</div>
               <div className={styles.expressionMeaning}>{expression.meaning}</div>
             </div>
-            <span style={{fontSize:'1.4rem', cursor:'pointer'}} title="Écouter">🔊</span>
+            <span style={{fontSize:'1.4rem', cursor:'pointer'}} title="Écouter" onClick={() => speak(`${expression.expression}. ${expression.example}`)}>🔊</span>
           </div>
           <div className={styles.expressionExample}>
             💬 <em>"{expression.example}"</em>
