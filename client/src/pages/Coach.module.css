@@ -83,6 +83,21 @@
 }
 .resetBtn:hover { background: var(--surface-hover); color: var(--text); }
 
+.terminerBtn {
+  background: #10B981;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.4rem 0.875rem;
+  border-radius: 2rem;
+  white-space: nowrap;
+  transition: opacity 0.15s;
+}
+.terminerBtn:hover { opacity: 0.85; }
+.terminerBtn:disabled { opacity: 0.5; cursor: default; }
+
 /* Vocab chips */
 .vocab {
   display: flex;

@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { chat } from './routes/chat.js';
 import { transcribe } from './routes/transcribe.js';
 import { speak } from './routes/speak.js';
+import { evaluate } from './routes/evaluate.js';
 import { getAllUsers, patchUser, removeUser } from './routes/admin.js';
 
 dotenv.config();
@@ -27,6 +28,7 @@ app.use(express.json());
 app.post('/api/chat', chat);
 app.post('/api/transcribe', express.raw({ type: '*/*', limit: '10mb' }), transcribe);
 app.post('/api/speak', speak);
+app.post('/api/evaluate', evaluate);
 app.get('/api/admin/users', getAllUsers);
 app.patch('/api/admin/users/:id', patchUser);
 app.delete('/api/admin/users/:id', removeUser);

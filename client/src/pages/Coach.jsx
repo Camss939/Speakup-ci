@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../lib/AuthContext';
 import topics from '../data/topics.json';
 import {
@@ -7,6 +7,7 @@ import {
   clearConversationHistory, setModuleProgress, addSession,
 } from '../lib/db';
 import { sendMessage, speak, stopSpeaking } from '../lib/coach';
+import SessionReport from '../components/SessionReport';
 import styles from './Coach.module.css';
 
 function findModule(moduleId) {
@@ -38,6 +39,10 @@ export default function Coach() {
   // Voice conversation mode
   const [voiceMode, setVoiceMode] = useState(false);
   const [voiceState, setVoiceState] = useState(VS.IDLE);
+
+  // Session report
+  const [evaluation, setEvaluation] = useState(null);
+  const [evaluating, setEvaluating] = useState(false);
 
   const voiceModeRef = useRef(false);
   const voiceStateRef = useRef(VS.IDLE);
@@ -207,6 +212,47 @@ export default function Coach() {
     setInput('');
   }
 
+  async function handleTerminer() {
+    stopVoiceMode();
+    stopSpeaking();
+    const msgs = messagesRef.current;
+    const userMsgs = msgs.filter(m => m.role === 'user');
+    // Save session now (don't wait for cleanup)
+    const duration = Math.round((Date.now() - sessionStart) / 1000);
+    if (msgs.length > 0 && duration > 20 && user) {
+      await addSession(user.id, { moduleId, moduleTitle: found?.mod.title || moduleId, duration });
+    }
+    if (userMsgs.length < 2) {
+      navigate(`/topics/${found?.topic.id || ''}`);
+      return;
+    }
+    setEvaluating(true);
+    try {
+      const { supabase } = await import('../lib/supabase.js');
+      const { data: { session } } = await supabase.auth.getSession();
+      const res = await fetch(`${API}/api/evaluate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.access_token}` },
+        body: JSON.stringify({ messages: msgs, moduleTitle: found?.mod.title, level: profile?.level }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        // Use real score for progression
+        const avgScore = Math.round(
+          (data.scores.grammar + data.scores.vocabulary + data.scores.fluency + data.scores.confidence) / 4
+        );
+        if (user) setModuleProgress(user.id, moduleId, Math.min(100, avgScore));
+        setEvaluation(data);
+      } else {
+        navigate(`/topics/${found?.topic.id || ''}`);
+      }
+    } catch {
+      navigate(`/topics/${found?.topic.id || ''}`);
+    } finally {
+      setEvaluating(false);
+    }
+  }
+
   async function handleReset() {
     stopVoiceMode();
     stopSpeaking();
@@ -221,6 +267,15 @@ export default function Coach() {
 
   if (!found) return <div className={styles.notfound}>Module introuvable. <button onClick={() => navigate('/topics')}>Retour</button></div>;
   const { topic, mod } = found;
+
+  if (evaluation) {
+    return <SessionReport
+      evaluation={evaluation}
+      moduleTitle={mod.title}
+      duration={Math.round((Date.now() - sessionStart) / 1000)}
+      onClose={() => navigate(`/topics/${topic.id}`)}
+    />;
+  }
 
   const stateLabel = {
     [VS.LISTENING]: "Je t'écoute... parle puis clique ⏹",
@@ -237,6 +292,9 @@ export default function Coach() {
           <span className={styles.headerModule}>{mod.title}</span>
         </div>
         <button className={styles.resetBtn} onClick={handleReset} title="Recommencer">↺</button>
+        <button className={styles.terminerBtn} onClick={handleTerminer} disabled={evaluating} title="Terminer la session">
+          {evaluating ? '⏳' : '✓ Terminer'}
+        </button>
       </header>
 
       <div className={styles.vocab}>

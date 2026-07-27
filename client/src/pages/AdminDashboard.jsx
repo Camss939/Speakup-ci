@@ -67,6 +67,12 @@ export default function AdminDashboard() {
   const pending = users.filter(u => !u.approved && u.role !== 'admin');
   const learners = users.filter(u => u.role === 'learner');
   const parents = users.filter(u => u.role === 'parent');
+  const activeLearners = learners.filter(u => u.approved);
+
+  // Level distribution for cockpit
+  const levelDist = Object.entries(LEVEL_LABELS).map(([key, label]) => ({
+    key, label, count: learners.filter(u => u.level === key).length,
+  })).filter(x => x.count > 0);
 
   if (loading) return <div className={styles.loader}>Chargement…</div>;
 
@@ -87,6 +93,10 @@ export default function AdminDashboard() {
             onClick={() => setTab('parents')}>
             👨‍👩‍👦 Parents <span className={styles.badge}>{parents.length}</span>
           </button>
+          <button className={`${styles.navItem} ${tab === 'cockpit' ? styles.active : ''}`}
+            onClick={() => setTab('cockpit')}>
+            📊 Cockpit
+          </button>
           {pending.length > 0 && (
             <button className={`${styles.navItem} ${tab === 'pending' ? styles.active : ''}`}
               onClick={() => setTab('pending')}>
@@ -104,6 +114,90 @@ export default function AdminDashboard() {
       </aside>
 
       <main className={styles.main}>
+        {tab === 'cockpit' && (
+          <section>
+            <h1 className={styles.pageTitle}>📊 Cockpit pédagogique</h1>
+
+            {/* KPIs */}
+            <div className={styles.cockpitGrid}>
+              <div className={styles.kpi}>
+                <span className={styles.kpiNum}>{learners.length}</span>
+                <span className={styles.kpiLabel}>Apprenants inscrits</span>
+              </div>
+              <div className={styles.kpi}>
+                <span className={styles.kpiNum}>{activeLearners.length}</span>
+                <span className={styles.kpiLabel}>Apprenants actifs</span>
+              </div>
+              <div className={styles.kpi}>
+                <span className={styles.kpiNum}>{parents.length}</span>
+                <span className={styles.kpiLabel}>Parents inscrits</span>
+              </div>
+              <div className={styles.kpi + ' ' + (pending.length > 0 ? styles.kpiAlert : '')}>
+                <span className={styles.kpiNum}>{pending.length}</span>
+                <span className={styles.kpiLabel}>En attente d'approbation</span>
+              </div>
+            </div>
+
+            {/* Level distribution */}
+            <div className={styles.cockpitCard}>
+              <h2 className={styles.cockpitCardTitle}>Répartition par niveau</h2>
+              {levelDist.length === 0 ? (
+                <p className={styles.empty}>Aucun apprenant encore</p>
+              ) : (
+                <div className={styles.levelBars}>
+                  {levelDist.map(({ key, label, count }) => {
+                    const pct = Math.round((count / learners.length) * 100);
+                    return (
+                      <div key={key} className={styles.levelBarRow}>
+                        <span className={styles.levelBarLabel}>{label}</span>
+                        <div className={styles.levelBarTrack}>
+                          <div className={styles.levelBarFill} style={{ width: `${pct}%` }} />
+                        </div>
+                        <span className={styles.levelBarCount}>{count} <span className={styles.levelBarPct}>({pct}%)</span></span>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* Topics catalog */}
+            <div className={styles.cockpitCard}>
+              <h2 className={styles.cockpitCardTitle}>Catalogue de cours</h2>
+              <div className={styles.topicCatalog}>
+                {topics.map(topic => (
+                  <div key={topic.id} className={styles.topicCatalogRow}>
+                    <span className={styles.topicCatalogEmoji}>{topic.emoji}</span>
+                    <span className={styles.topicCatalogLabel}>{topic.label}</span>
+                    <span className={styles.topicCatalogCount}>{topic.modules.length} modules</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Recent registrations */}
+            <div className={styles.cockpitCard}>
+              <h2 className={styles.cockpitCardTitle}>Derniers inscrits</h2>
+              <div className={styles.userList}>
+                {[...learners, ...parents].slice(0, 8).map(u => (
+                  <div key={u.id} className={styles.userCard}>
+                    <div className={styles.userInfo}>
+                      <span className={styles.userName}>{u.full_name}</span>
+                      <span className={styles.userMeta}>
+                        {u.role === 'parent' ? '👨‍👩‍👦 Parent' : `🎓 ${LEVEL_LABELS[u.level] || '—'}`}
+                        {' · '}{u.approved ? '✅ Actif' : '⏳ En attente'}
+                      </span>
+                    </div>
+                    {!u.approved && (
+                      <button className={styles.approveBtn} onClick={() => approve(u.id)}>✓ Approuver</button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
         {tab === 'pending' && (
           <section>
             <h1 className={styles.pageTitle}>Comptes en attente</h1>
