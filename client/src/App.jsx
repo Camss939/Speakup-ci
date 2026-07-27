@@ -9,6 +9,7 @@ import Coach from './pages/Coach';
 import AdminDashboard from './pages/AdminDashboard';
 import ParentDashboard from './pages/ParentDashboard';
 import Passport from './pages/Passport';
+import Portfolio from './pages/Portfolio';
 
 const Spinner = () => (
   <div style={{ display:'flex', alignItems:'center', justifyContent:'center', height:'100vh', color:'var(--text-muted)' }}>
@@ -75,6 +76,18 @@ export default function App() {
           <Route path="/passport" element={
             <ProtectedRoute allowRoles={['learner']}>
               <Passport />
+            </ProtectedRoute>
+          } />
+
+          {/* Portfolio — learner sees own, admin sees any */}
+          <Route path="/portfolio" element={
+            <ProtectedRoute allowRoles={['learner']}>
+              <Portfolio />
+            </ProtectedRoute>
+          } />
+          <Route path="/portfolio/:userId" element={
+            <ProtectedRoute allowRoles={['admin']}>
+              <Portfolio />
             </ProtectedRoute>
           } />
 

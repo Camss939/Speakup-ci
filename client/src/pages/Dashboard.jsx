@@ -109,6 +109,16 @@ export default function Dashboard() {
           </div>
         </div>
 
+        {/* Portfolio link */}
+        <Link to="/portfolio" className={styles.portfolioLink}>
+          <span>📄</span>
+          <div>
+            <span className={styles.passportLinkTitle}>Mon Attestation</span>
+            <span className={styles.passportLinkSub}>Voir et imprimer ton bilan de pratique</span>
+          </div>
+          <span className={styles.passportLinkArrow}>›</span>
+        </Link>
+
         {/* Passeport link */}
         <Link to="/passport" className={styles.passportLink}>
           <span>🛂</span>

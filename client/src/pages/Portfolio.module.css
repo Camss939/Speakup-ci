@@ -1,0 +1,160 @@
+/* Wrapper */
+.wrapper {
+  min-height: 100vh;
+  background: var(--bg);
+  padding-bottom: 3rem;
+}
+
+.loader {
+  display: flex; align-items: center; justify-content: center;
+  height: 100vh; color: var(--text-muted); font-size: 1rem;
+}
+
+/* Action bar (hidden in print) */
+.actionBar {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 0.875rem 2rem;
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 10;
+}
+.backBtn {
+  background: none; border: 1px solid var(--border);
+  border-radius: 8px; padding: 0.4rem 0.875rem;
+  font-size: 0.85rem; color: var(--text-muted); cursor: pointer;
+  transition: all 0.15s;
+}
+.backBtn:hover { color: var(--text); background: var(--bg); }
+.actionTitle { flex: 1; font-size: 0.9rem; font-weight: 600; color: var(--text); }
+.printBtn {
+  background: var(--accent); color: #fff; border: none;
+  border-radius: 8px; padding: 0.45rem 1.1rem;
+  font-size: 0.85rem; font-weight: 700; cursor: pointer;
+  transition: opacity 0.15s;
+}
+.printBtn:hover { opacity: 0.85; }
+
+/* Document */
+.document {
+  max-width: 860px;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.12);
+  overflow: hidden;
+  font-family: 'Inter', -apple-system, sans-serif;
+  color: #1e293b;
+}
+
+/* Header band */
+.docHeader {
+  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 60%, #4f46e5 100%);
+  padding: 2rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+.docBrand { display: flex; align-items: center; gap: 0.75rem; }
+.docLogo { font-size: 2.5rem; }
+.docBrandName { font-size: 1.25rem; font-weight: 800; color: #e0e7ff; letter-spacing: -0.02em; }
+.docBrandSub { font-size: 0.72rem; color: rgba(199,210,254,0.7); margin-top: 0.1rem; }
+.docTitle { text-align: right; }
+.docTitleMain { font-size: 1rem; font-weight: 800; color: #fff; letter-spacing: 0.08em; }
+.docTitleSub { font-size: 0.7rem; color: rgba(199,210,254,0.65); margin-top: 0.25rem; max-width: 280px; }
+
+/* Student info */
+.studentBox {
+  display: flex; align-items: center; gap: 1.25rem;
+  padding: 1.5rem 2.5rem;
+  border-bottom: 2px solid #e2e8f0;
+  background: #f8fafc;
+}
+.studentAvatar {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: #fff; font-size: 1.5rem; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.studentInfo { flex: 1; }
+.studentName { font-size: 1.2rem; font-weight: 800; color: #0f172a; }
+.studentMeta { display: flex; gap: 1.25rem; margin-top: 0.375rem; flex-wrap: wrap; }
+.studentMeta span { font-size: 0.78rem; color: #64748b; }
+.studentMeta strong { color: #0f172a; }
+.cefrBadge {
+  text-align: center; flex-shrink: 0;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: #fff; border-radius: 12px;
+  padding: 0.625rem 1.25rem;
+}
+.cefrLevel { font-size: 1.75rem; font-weight: 900; line-height: 1; }
+.cefrLabel { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.8; margin-top: 0.2rem; }
+
+/* Metrics grid */
+.metricsGrid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border-bottom: 1px solid #e2e8f0;
+}
+.metric {
+  text-align: center; padding: 1.25rem 0.5rem;
+  border-right: 1px solid #e2e8f0;
+}
+.metric:last-child { border-right: none; }
+.metricNum { font-size: 2rem; font-weight: 900; color: #4f46e5; line-height: 1; }
+.metricLabel { font-size: 0.7rem; color: #64748b; font-weight: 500; margin-top: 0.25rem; }
+
+/* Sections */
+.section { padding: 1.5rem 2.5rem; border-bottom: 1px solid #e2e8f0; }
+.sectionTitle {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: #64748b; margin-bottom: 1rem;
+}
+
+/* Skill bars */
+.skillBars { display: flex; flex-direction: column; gap: 0.625rem; }
+.skillRow { display: flex; align-items: center; gap: 0.75rem; }
+.skillIcon { font-size: 1rem; width: 24px; }
+.skillLabel { font-size: 0.82rem; font-weight: 600; color: #1e293b; width: 120px; flex-shrink: 0; }
+.skillTrack { flex: 1; height: 10px; background: #e2e8f0; border-radius: 5px; overflow: hidden; }
+.skillFill { height: 100%; background: linear-gradient(90deg, #6366f1, #4f46e5); border-radius: 5px; }
+.skillScore { font-size: 0.82rem; font-weight: 700; color: #4f46e5; width: 40px; text-align: right; }
+
+/* Module grid */
+.moduleGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; }
+.moduleCard {
+  background: #f8fafc; border: 1px solid #e2e8f0;
+  border-radius: 10px; padding: 0.75rem;
+}
+.moduleCardTop { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+.moduleCardEmoji { font-size: 1rem; flex-shrink: 0; }
+.moduleCardTitle { flex: 1; font-size: 0.78rem; font-weight: 600; color: #0f172a; line-height: 1.3; }
+.masterStamp {
+  font-size: 0.65rem; font-weight: 800;
+  background: #dcfce7; color: #16a34a;
+  border-radius: 100px; padding: 0.1rem 0.4rem;
+  flex-shrink: 0;
+}
+.moduleCardBar { height: 5px; background: #e2e8f0; border-radius: 3px; overflow: hidden; margin-bottom: 0.375rem; }
+.moduleCardFill { height: 100%; border-radius: 3px; }
+.moduleCardMeta { display: flex; justify-content: space-between; align-items: center; }
+.moduleCardLabel { font-size: 0.68rem; color: #94a3b8; }
+
+/* Footer */
+.docFooter { padding: 1.25rem 2.5rem 2rem; background: #f8fafc; }
+.footerNote {
+  font-size: 0.7rem; color: #94a3b8; line-height: 1.5;
+  border-top: 1px solid #e2e8f0; padding-top: 1rem; margin-bottom: 1.5rem;
+}
+.footerSig { display: flex; justify-content: space-between; gap: 2rem; }
+.footerSigLine { text-align: center; flex: 1; }
+.sigBlank { height: 40px; border-bottom: 1.5px solid #cbd5e1; margin-bottom: 0.375rem; }
+.sigBrand { height: 40px; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 0.25rem; font-size: 1.1rem; font-weight: 800; color: #4f46e5; border-bottom: 1.5px solid #4f46e5; margin-bottom: 0.375rem; }
+.sigLabel { font-size: 0.68rem; color: #94a3b8; }
+
+/* Print styles */
+@media print {
+  .actionBar { display: none !important; }
+  .wrapper { background: #fff; padding: 0; }
+  .document { margin: 0; box-shadow: none; border-radius: 0; max-width: 100%; }
+  @page { margin: 1cm; }
+}

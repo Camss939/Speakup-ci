@@ -1,10 +1,13 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../lib/AuthContext';
 import { getAllProfiles, updateProfile, deleteUser, getSessionsForUser, getProgressForUser, linkChildToParent } from '../lib/db';
 import { signOut } from '../lib/auth';
+import { supabase } from '../lib/supabase';
 import topics from '../data/topics.json';
 import styles from './AdminDashboard.module.css';
+
+const API = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 const LEVEL_LABELS = {
   'beginner': 'Débutant',
@@ -28,8 +31,28 @@ export default function AdminDashboard() {
   const [linkingParent, setLinkingParent] = useState(false);
   const [selectedParentId, setSelectedParentId] = useState('');
 
+  // Director AI assistant state
+  const [allSessions, setAllSessions] = useState([]);
+  const [allProgress, setAllProgress] = useState([]);
+  const [directorQ, setDirectorQ] = useState('');
+  const [directorAnswer, setDirectorAnswer] = useState('');
+  const [directorLoading, setDirectorLoading] = useState(false);
+  const [directorHistory, setDirectorHistory] = useState([]);
+  const directorEndRef = useRef(null);
+
   useEffect(() => {
-    getAllProfiles().then(data => { setUsers(data); setLoading(false); });
+    getAllProfiles().then(async data => {
+      setUsers(data);
+      setLoading(false);
+      // Pre-fetch sessions + progress for all learners (for AI assistant)
+      const learners = data.filter(u => u.role === 'learner');
+      const [sessionsArrays, progressArrays] = await Promise.all([
+        Promise.all(learners.map(l => getSessionsForUser(l.id))),
+        Promise.all(learners.map(l => getProgressForUser(l.id))),
+      ]);
+      setAllSessions(sessionsArrays.flat());
+      setAllProgress(progressArrays.flat());
+    });
   }, []);
 
   async function selectUser(u) {
@@ -52,6 +75,34 @@ export default function AdminDashboard() {
     await updateProfile(userId, { approved: false });
     setUsers(us => us.map(u => u.id === userId ? { ...u, approved: false } : u));
     if (selected?.id === userId) setSelected(s => ({ ...s, approved: false }));
+  }
+
+  async function handleDirectorQuestion(e) {
+    e.preventDefault();
+    if (!directorQ.trim() || directorLoading) return;
+    const q = directorQ.trim();
+    setDirectorQ('');
+    setDirectorLoading(true);
+    setDirectorHistory(h => [...h, { role: 'user', content: q }]);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const res = await fetch(`${API}/api/director/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.access_token}` },
+        body: JSON.stringify({
+          question: q,
+          schoolData: { learners: users.filter(u => u.role === 'learner'), sessions: allSessions, progress: allProgress },
+        }),
+      });
+      const data = await res.json();
+      const answer = res.ok ? data.answer : 'Assistant indisponible pour le moment.';
+      setDirectorHistory(h => [...h, { role: 'assistant', content: answer }]);
+    } catch {
+      setDirectorHistory(h => [...h, { role: 'assistant', content: 'Erreur de connexion.' }]);
+    } finally {
+      setDirectorLoading(false);
+      setTimeout(() => directorEndRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
+    }
   }
 
   async function handleLinkParent() {
@@ -189,6 +240,66 @@ export default function AdminDashboard() {
               </div>
             </div>
 
+            {/* Director AI Assistant */}
+            <div className={styles.directorAI}>
+              <div className={styles.directorAIHeader}>
+                <span className={styles.directorAIIcon}>🤖</span>
+                <div>
+                  <div className={styles.directorAITitle}>Assistant IA du Directeur</div>
+                  <div className={styles.directorAISub}>Posez n'importe quelle question sur votre établissement</div>
+                </div>
+              </div>
+
+              {directorHistory.length === 0 && (
+                <div className={styles.directorSuggestions}>
+                  {[
+                    'Quels élèves risquent d\'abandonner ?',
+                    'Qui sont les meilleurs apprenants cette semaine ?',
+                    'Qui n\'a jamais pratiqué ?',
+                    'Prépare un résumé de l\'établissement',
+                  ].map(q => (
+                    <button key={q} className={styles.suggestionChip}
+                      onClick={() => { setDirectorQ(q); }}>
+                      {q}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {directorHistory.length > 0 && (
+                <div className={styles.directorMessages}>
+                  {directorHistory.map((m, i) => (
+                    <div key={i} className={`${styles.directorMsg} ${m.role === 'user' ? styles.directorMsgUser : styles.directorMsgAI}`}>
+                      {m.role === 'assistant' && <span className={styles.directorMsgAvatar}>🤖</span>}
+                      <div className={styles.directorMsgText}>{m.content}</div>
+                    </div>
+                  ))}
+                  {directorLoading && (
+                    <div className={`${styles.directorMsg} ${styles.directorMsgAI}`}>
+                      <span className={styles.directorMsgAvatar}>🤖</span>
+                      <div className={styles.directorMsgText}>
+                        <span className={styles.typingDots}><span/><span/><span/></span>
+                      </div>
+                    </div>
+                  )}
+                  <div ref={directorEndRef} />
+                </div>
+              )}
+
+              <form className={styles.directorForm} onSubmit={handleDirectorQuestion}>
+                <input
+                  className={styles.directorInput}
+                  value={directorQ}
+                  onChange={e => setDirectorQ(e.target.value)}
+                  placeholder="Posez votre question..."
+                  disabled={directorLoading}
+                />
+                <button className={styles.directorSend} type="submit" disabled={!directorQ.trim() || directorLoading}>
+                  Envoyer
+                </button>
+              </form>
+            </div>
+
             {/* Pending alert */}
             {pending.length > 0 && (
               <div className={styles.cockpitCard} style={{ borderColor: 'var(--accent)' }}>
@@ -267,6 +378,9 @@ export default function AdminDashboard() {
                       </span>
                     </div>
                     <div className={styles.detailActions}>
+                      {selected.role === 'learner' && (
+                        <Link to={`/portfolio/${selected.id}`} className={styles.portfolioBtn} target="_blank">📄 Attestation</Link>
+                      )}
                       {selected.approved
                         ? <button className={styles.revokeBtn} onClick={() => revoke(selected.id)}>Suspendre</button>
                         : <button className={styles.approveBtn} onClick={() => approve(selected.id)}>✓ Approuver</button>}
