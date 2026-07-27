@@ -98,6 +98,30 @@
 .terminerBtn:hover { opacity: 0.85; }
 .terminerBtn:disabled { opacity: 0.5; cursor: default; }
 
+/* Floating Terminer banner */
+.termineBanner {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 0.75rem; padding: 0.75rem 1.25rem;
+  background: linear-gradient(90deg, #065f46, #047857);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  animation: slideInBanner 0.35s ease;
+  flex-shrink: 0;
+}
+@keyframes slideInBanner {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.termineBannerText { font-size: 0.85rem; font-weight: 600; color: #d1fae5; }
+.termineBannerBtn {
+  background: #fff; color: #065f46;
+  border: none; border-radius: 2rem;
+  padding: 0.45rem 1.1rem;
+  font-size: 0.82rem; font-weight: 800; cursor: pointer;
+  white-space: nowrap; flex-shrink: 0;
+  transition: opacity 0.15s;
+}
+.termineBannerBtn:hover { opacity: 0.9; }
+
 /* Vocab chips */
 .vocab {
   display: flex;

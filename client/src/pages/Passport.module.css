@@ -1,0 +1,90 @@
+.page { min-height: 100vh; background: var(--bg); }
+
+.main { max-width: 700px; margin: 0 auto; padding: 1.5rem 1.25rem 5rem; }
+
+/* Passport cover */
+.cover {
+  display: flex; align-items: center; justify-content: space-between;
+  background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+  border-radius: 16px; padding: 1.5rem 1.75rem;
+  margin-bottom: 1.5rem; gap: 1rem;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.coverLeft { flex: 1; }
+.passportLabel {
+  font-size: 0.6rem; font-weight: 800; letter-spacing: 0.18em;
+  text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 0.4rem;
+}
+.passportName { font-size: 1.4rem; font-weight: 800; color: #fff; letter-spacing: -0.02em; }
+.passportMeta { font-size: 0.75rem; color: rgba(255,255,255,0.45); margin-top: 0.25rem; }
+.coverRight { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; }
+.passportFlag { font-size: 2.5rem; }
+.passportSeal {
+  font-size: 0.6rem; font-weight: 800; letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.35); text-transform: uppercase;
+}
+
+/* Stats */
+.stats {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem; margin-bottom: 1.75rem;
+}
+.stat {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1rem; text-align: center;
+  display: flex; flex-direction: column; gap: 0.2rem;
+}
+.statNum { font-size: 1.6rem; font-weight: 800; color: var(--accent); letter-spacing: -0.03em; }
+.statLabel { font-size: 0.7rem; color: var(--text-muted); font-weight: 500; }
+
+.sectionTitle {
+  font-size: 0.85rem; font-weight: 700; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  margin: 0 0 1rem;
+}
+
+/* Destination cards */
+.grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 0.875rem;
+}
+
+.card {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; gap: 0.25rem;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; padding: 1.125rem 0.75rem;
+  text-decoration: none; position: relative; overflow: hidden;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+
+.cardStamped { border-color: #10B981; background: linear-gradient(180deg, rgba(16,185,129,0.06), var(--surface)); }
+.cardLocked { opacity: 0.55; filter: grayscale(0.4); }
+
+/* Stamp overlay */
+.stamp {
+  position: absolute; top: 8px; right: -18px;
+  background: #10B981; color: #fff;
+  font-size: 0.52rem; font-weight: 800; letter-spacing: 0.08em;
+  padding: 0.15rem 1.5rem 0.15rem 0.5rem;
+  transform: rotate(35deg); transform-origin: center;
+  border: 1.5px solid rgba(255,255,255,0.3);
+}
+
+.flag { font-size: 2rem; line-height: 1; }
+.topicEmoji { font-size: 1.1rem; }
+.country { font-size: 0.78rem; font-weight: 800; color: var(--text); margin-top: 0.1rem; }
+.city { font-size: 0.65rem; color: var(--text-muted); margin-bottom: 0.1rem; }
+.topicLabel { font-size: 0.7rem; font-weight: 600; color: var(--text-muted); }
+.stars { font-size: 0.75rem; letter-spacing: 1px; margin: 0.25rem 0; }
+
+.barWrap { display: flex; align-items: center; gap: 0.3rem; width: 100%; }
+.bar { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.barFill { height: 100%; border-radius: 2px; transition: width 0.6s; }
+.barPct { font-size: 0.62rem; color: var(--text-muted); font-weight: 600; flex-shrink: 0; }
+
+@media (max-width: 480px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+  .stats { grid-template-columns: repeat(3, 1fr); }
+}

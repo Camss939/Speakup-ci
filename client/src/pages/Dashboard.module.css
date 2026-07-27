@@ -341,3 +341,42 @@
 .libreTitle { display: block; font-size: 1rem; font-weight: 800; color: var(--text); }
 .libreSub { display: block; font-size: 0.78rem; color: var(--text-muted); margin-top: 0.15rem; }
 .libreArrow { font-size: 1.4rem; color: #6366F1; font-weight: 700; }
+
+/* Passport link */
+.passportLink {
+  display: flex; align-items: center; gap: 0.875rem;
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px; padding: 0.875rem 1.125rem;
+  text-decoration: none; margin-bottom: 1rem;
+  transition: opacity 0.15s;
+}
+.passportLink:hover { opacity: 0.88; }
+.passportLink > span:first-child { font-size: 1.6rem; flex-shrink: 0; }
+.passportLink > div { flex: 1; }
+.passportLinkTitle { display: block; font-size: 0.9rem; font-weight: 800; color: #fff; }
+.passportLinkSub { display: block; font-size: 0.72rem; color: rgba(255,255,255,0.45); margin-top: 0.1rem; }
+.passportLinkArrow { font-size: 1.3rem; color: rgba(255,255,255,0.4); font-weight: 700; }
+
+/* Daily quests */
+.questsCard {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; padding: 1rem 1.125rem;
+  margin-bottom: 1.25rem;
+}
+.questsHeader {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 0.75rem;
+}
+.questsTitle { font-size: 0.85rem; font-weight: 800; color: var(--text); }
+.questsXP { font-size: 0.75rem; font-weight: 700; color: var(--accent); }
+.quest {
+  display: flex; align-items: center; gap: 0.625rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.quest:last-child { border-bottom: none; }
+.questDone .questLabel { color: var(--text-muted); text-decoration: line-through; }
+.questIcon { font-size: 1rem; width: 20px; text-align: center; flex-shrink: 0; }
+.questLabel { flex: 1; font-size: 0.82rem; color: var(--text); font-weight: 500; }
+.questReward { font-size: 0.72rem; font-weight: 700; color: var(--accent); flex-shrink: 0; }

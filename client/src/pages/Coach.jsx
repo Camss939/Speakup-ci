@@ -98,6 +98,14 @@ export default function Coach() {
     if (ready && messages.length === 0) replyAsCoach("Hi! I'm ready to practice. Please start!");
   }, [ready]);
 
+  // Track "Conversation libre" visit for daily quests
+  useEffect(() => {
+    if (moduleId === 'libre' && user) {
+      const today = new Date().toISOString().slice(0, 10);
+      localStorage.setItem(`libre-visited-${user.id}-${today}`, '1');
+    }
+  }, [moduleId, user]);
+
   useEffect(() => {
     return () => {
       stopSpeaking();
@@ -374,6 +382,18 @@ export default function Coach() {
           )}
           <button className={styles.voiceStopBtn} onClick={stopVoiceMode}>
             Arrêter la conversation
+          </button>
+        </div>
+      )}
+
+      {/* Floating Terminer prompt — appears after 4+ user exchanges */}
+      {!voiceMode && messages.filter(m => m.role === 'user').length >= 4 && !evaluating && (
+        <div className={styles.termineBanner}>
+          <span className={styles.termineBannerText}>
+            🎉 Bonne session ! Prêt à voir ton rapport ?
+          </span>
+          <button className={styles.termineBannerBtn} onClick={handleTerminer}>
+            Voir mon rapport →
           </button>
         </div>
       )}

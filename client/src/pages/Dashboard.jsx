@@ -64,6 +64,16 @@ export default function Dashboard() {
   const total = allTopics.reduce((n, t) => n + t.modules.length, 0);
   const explored = Object.values(progress).filter(p => p >= 100).length;
 
+  // Daily quests — auto-detected
+  const today = new Date().toISOString().slice(0, 10);
+  const sessionToday = sessions.some(s => s.created_at?.slice(0, 10) === today);
+  const libreToday = user ? !!localStorage.getItem(`libre-visited-${user.id}-${today}`) : false;
+  const quests = [
+    { id: 'session', icon: '🎙️', label: 'Faire une session aujourd\'hui', xp: 50, done: sessionToday },
+    { id: 'challenge', icon: '🎯', label: 'Relever le défi du jour', xp: 50, done: challengeDone },
+    { id: 'libre', icon: '💬', label: 'Essayer la Conversation libre', xp: 40, done: libreToday },
+  ];
+
   if (loading) return <div style={{padding:'3rem', textAlign:'center', color:'var(--text-muted)'}}>Chargement…</div>;
 
   return (
@@ -97,6 +107,31 @@ export default function Dashboard() {
               <span className={styles.heroStatLabel}>modules</span>
             </div>
           </div>
+        </div>
+
+        {/* Passeport link */}
+        <Link to="/passport" className={styles.passportLink}>
+          <span>🛂</span>
+          <div>
+            <span className={styles.passportLinkTitle}>Passeport SpeakUp</span>
+            <span className={styles.passportLinkSub}>Visite le monde en apprenant l'anglais</span>
+          </div>
+          <span className={styles.passportLinkArrow}>›</span>
+        </Link>
+
+        {/* Daily quests */}
+        <div className={styles.questsCard}>
+          <div className={styles.questsHeader}>
+            <span className={styles.questsTitle}>⚡ Missions du jour</span>
+            <span className={styles.questsXP}>+{quests.filter(q => q.done).reduce((s, q) => s + q.xp, 0)} / {quests.reduce((s, q) => s + q.xp, 0)} XP</span>
+          </div>
+          {quests.map(q => (
+            <div key={q.id} className={`${styles.quest} ${q.done ? styles.questDone : ''}`}>
+              <span className={styles.questIcon}>{q.done ? '✅' : q.icon}</span>
+              <span className={styles.questLabel}>{q.label}</span>
+              <span className={styles.questReward}>+{q.xp} XP</span>
+            </div>
+          ))}
         </div>
 
         {/* Expression du jour */}
