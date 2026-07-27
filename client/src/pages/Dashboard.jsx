@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../lib/AuthContext';
 import { signOut } from '../lib/auth';
 import { getProgress, getSessions, computeStreak, getDailyChallengeDone, setDailyChallengeDone } from '../lib/db';
+import { starsFromPct } from '../lib/utils';
 import topics from '../data/topics.json';
 import expressions from '../data/dailyExpressions.json';
 import challenges from '../data/dailyChallenges.json';
@@ -144,17 +145,34 @@ export default function Dashboard() {
         </div>
 
         {/* Topics */}
+        {/* Conversation libre — always available */}
+        <Link to="/coach/libre" className={styles.libreCard}>
+          <span className={styles.libreEmoji}>💬</span>
+          <div className={styles.libreInfo}>
+            <span className={styles.libreTitle}>Conversation libre</span>
+            <span className={styles.libreSub}>Parle de n'importe quel sujet — sans limite</span>
+          </div>
+          <span className={styles.libreArrow}>›</span>
+        </Link>
+
         <h2 className={styles.sectionTitle}>Explore les thèmes</h2>
         <div className={styles.topicGrid}>
           {allTopics.map(topic => {
-            const done = topic.modules.filter(m => (progress[m.id] || 0) >= 100).length;
-            const pct = Math.round((done / topic.modules.length) * 100);
+            const totalStars = topic.modules.reduce((s, m) => {
+              const p = progress[m.id] || 0;
+              return s + (p <= 0 ? 0 : p <= 20 ? 1 : p <= 40 ? 2 : p <= 60 ? 3 : p <= 80 ? 4 : 5);
+            }, 0);
+            const maxStars = topic.modules.length * 5;
+            const pct = Math.round((totalStars / maxStars) * 100);
+            const masteredCount = topic.modules.filter(m => (progress[m.id] || 0) > 80).length;
             return (
               <Link key={topic.id} to={`/topics/${topic.id}`} className={styles.topicCard}>
                 <span className={styles.topicEmoji}>{topic.emoji}</span>
                 <div className={styles.topicInfo}>
                   <span className={styles.topicLabel}>{topic.label}</span>
-                  <span className={styles.topicMeta}>{done}/{topic.modules.length} modules</span>
+                  <span className={styles.topicMeta}>
+                    {masteredCount > 0 ? `${masteredCount}/${topic.modules.length} maîtrisés` : `${topic.modules.length} modules`}
+                  </span>
                   <div className={styles.progressBar}>
                     <div className={styles.progressFill} style={{ width: `${pct}%`, background: topic.color }} />
                   </div>

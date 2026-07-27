@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../lib/AuthContext';
-import { getAllProfiles, updateProfile, deleteUser, getSessionsForUser, getProgressForUser } from '../lib/db';
+import { getAllProfiles, updateProfile, deleteUser, getSessionsForUser, getProgressForUser, linkChildToParent } from '../lib/db';
 import { signOut } from '../lib/auth';
 import topics from '../data/topics.json';
 import styles from './AdminDashboard.module.css';
@@ -25,6 +25,8 @@ export default function AdminDashboard() {
   const [selectedProgress, setSelectedProgress] = useState({});
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState('users');
+  const [linkingParent, setLinkingParent] = useState(false);
+  const [selectedParentId, setSelectedParentId] = useState('');
 
   useEffect(() => {
     getAllProfiles().then(data => { setUsers(data); setLoading(false); });
@@ -50,6 +52,18 @@ export default function AdminDashboard() {
     await updateProfile(userId, { approved: false });
     setUsers(us => us.map(u => u.id === userId ? { ...u, approved: false } : u));
     if (selected?.id === userId) setSelected(s => ({ ...s, approved: false }));
+  }
+
+  async function handleLinkParent() {
+    if (!selectedParentId || !selected) return;
+    setLinkingParent(true);
+    try {
+      await linkChildToParent(selected.id, selectedParentId);
+      setUsers(us => us.map(u => u.id === selected.id ? { ...u, parent_id: selectedParentId } : u));
+      setSelected(s => ({ ...s, parent_id: selectedParentId }));
+      setSelectedParentId('');
+    } catch (e) { alert('Erreur : ' + e.message); }
+    finally { setLinkingParent(false); }
   }
 
   async function handleDelete(userId) {
@@ -283,6 +297,39 @@ export default function AdminDashboard() {
 
                   {selected.role === 'learner' && (
                     <>
+                      {/* Link to parent */}
+                      <div className={styles.linkParentBox}>
+                        <h3 className={styles.sectionTitle}>Lier à un parent / responsable</h3>
+                        {selected.parent_id ? (
+                          <p className={styles.linkedInfo}>
+                            ✅ Lié à : <strong>{users.find(u => u.id === selected.parent_id)?.full_name || selected.parent_id}</strong>
+                            <button className={styles.unlinkBtn} onClick={() => handleLinkParent('')}>
+                              Retirer
+                            </button>
+                          </p>
+                        ) : (
+                          <div className={styles.linkParentRow}>
+                            <select
+                              className={styles.parentSelect}
+                              value={selectedParentId}
+                              onChange={e => setSelectedParentId(e.target.value)}
+                            >
+                              <option value="">— Choisir un parent —</option>
+                              {parents.map(p => (
+                                <option key={p.id} value={p.id}>{p.full_name}</option>
+                              ))}
+                            </select>
+                            <button
+                              className={styles.approveBtn}
+                              onClick={handleLinkParent}
+                              disabled={!selectedParentId || linkingParent}
+                            >
+                              {linkingParent ? '…' : 'Lier'}
+                            </button>
+                          </div>
+                        )}
+                      </div>
+
                       <h3 className={styles.sectionTitle}>Progression par topic</h3>
                       <div className={styles.topicProgress}>
                         {topics.filter(t => t.forUsers.includes(selected.id) || true).map(topic => {

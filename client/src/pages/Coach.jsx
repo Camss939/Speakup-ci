@@ -10,12 +10,33 @@ import { sendMessage, speak, stopSpeaking } from '../lib/coach';
 import SessionReport from '../components/SessionReport';
 import styles from './Coach.module.css';
 
+const LIBRE = {
+  topic: { id: 'libre', label: 'Conversation libre', emoji: '💬', color: '#6366F1' },
+  mod: {
+    id: 'libre', title: 'Conversation libre', vocab: [], intro: '',
+    coachSeed: 'Let the student choose any topic they want to discuss. Follow their lead completely. Be curious, warm and engaging.',
+  },
+};
+
 function findModule(moduleId) {
+  if (moduleId === 'libre') return LIBRE;
   for (const topic of topics) {
     const mod = topic.modules.find(m => m.id === moduleId);
     if (mod) return { topic, mod };
   }
   return null;
+}
+
+function loadPrevErrors(userId, moduleId) {
+  try {
+    return JSON.parse(localStorage.getItem(`err-${userId}-${moduleId}`) || '[]');
+  } catch { return []; }
+}
+
+function savePrevErrors(userId, moduleId, errors) {
+  try {
+    localStorage.setItem(`err-${userId}-${moduleId}`, JSON.stringify((errors || []).slice(0, 4)));
+  } catch {}
 }
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:3001';
@@ -88,9 +109,14 @@ export default function Coach() {
     };
   }, []);
 
-  const topicContext = found
-    ? `Topic: ${found.topic.label} — Module: "${found.mod.title}"\nVocab to use: ${found.mod.vocab.join(', ')}\nCoach direction: ${found.mod.coachSeed}`
-    : null;
+  const prevErrors = user ? loadPrevErrors(user.id, moduleId) : [];
+  const errorNote = prevErrors.length > 0
+    ? `\n\n## Points à revoir depuis la dernière session\n${prevErrors.map(e => `- "${e.error}" → "${e.correction}" (${e.rule})`).join('\n')}\nNaturally weave in a check on these errors. If the student gets them right, give a brief encouragement.`
+    : '';
+
+  const topicContext = found && moduleId !== 'libre'
+    ? `Topic: ${found.topic.label} — Module: "${found.mod.title}"\nVocab to use: ${found.mod.vocab.join(', ')}\nCoach direction: ${found.mod.coachSeed}${errorNote}`
+    : moduleId === 'libre' ? `Coach direction: ${LIBRE.mod.coachSeed}${errorNote}` : null;
 
   async function replyAsCoach(userText) {
     const userMsg = { role: 'user', content: userText };
@@ -244,7 +270,13 @@ export default function Coach() {
         const msgCount = msgs.filter(m => m.role === 'user').length;
         const cap = msgCount < 5 ? 30 : msgCount < 8 ? 55 : msgCount < 12 ? 75 : 100;
         const finalPct = Math.min(cap, avgScore);
-        if (user) setModuleProgress(user.id, moduleId, finalPct);
+        if (user) {
+          setModuleProgress(user.id, moduleId, finalPct);
+          // Save errors for spaced repetition in next session
+          if (data.errors_corrected?.length > 0) {
+            savePrevErrors(user.id, moduleId, data.errors_corrected);
+          }
+        }
         setEvaluation(data);
       } else {
         navigate(`/topics/${found?.topic.id || ''}`);

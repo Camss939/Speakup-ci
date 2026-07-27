@@ -12,8 +12,13 @@ export async function getProgress(userId) {
 }
 
 export async function setModuleProgress(userId, moduleId, pct) {
+  // Fetch current value first — progress can only go up, never down
+  const { data } = await supabase.from('progress').select('percentage')
+    .eq('user_id', userId).eq('module_id', moduleId).single();
+  const current = data?.percentage ?? 0;
+  const next = Math.max(current, pct);
   await supabase.from('progress').upsert(
-    { user_id: userId, module_id: moduleId, percentage: pct, updated_at: new Date().toISOString() },
+    { user_id: userId, module_id: moduleId, percentage: next, updated_at: new Date().toISOString() },
     { onConflict: 'user_id,module_id' }
   );
 }
