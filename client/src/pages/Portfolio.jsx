@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../lib/AuthContext';
-import { supabase } from '../lib/supabaseClient';
+import { supabase } from '../lib/supabase';
 import { getProgress, getSessions } from '../lib/db';
 import { starsFromPct, masteryLabel } from '../lib/utils';
 import topics from '../data/topics.json';
