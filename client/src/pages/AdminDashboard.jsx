@@ -378,10 +378,7 @@ export default function AdminDashboard() {
                       </span>
                     </div>
                     <div className={styles.detailActions}>
-                      {selected.role === 'learner' && (
-                        <Link to={`/portfolio/${selected.id}`} className={styles.portfolioBtn} target="_blank">📄 Attestation</Link>
-                      )}
-                      {selected.approved
+{selected.approved
                         ? <button className={styles.revokeBtn} onClick={() => revoke(selected.id)}>Suspendre</button>
                         : <button className={styles.approveBtn} onClick={() => approve(selected.id)}>✓ Approuver</button>}
                       <button className={styles.deleteBtn} onClick={() => handleDelete(selected.id)}>Supprimer</button>

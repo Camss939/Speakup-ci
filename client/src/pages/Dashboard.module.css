@@ -342,19 +342,6 @@
 .libreSub { display: block; font-size: 0.78rem; color: var(--text-muted); margin-top: 0.15rem; }
 .libreArrow { font-size: 1.4rem; color: #6366F1; font-weight: 700; }
 
-/* Portfolio link */
-.portfolioLink {
-  display: flex; align-items: center; gap: 0.875rem;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px; padding: 0.875rem 1.125rem;
-  text-decoration: none; margin-bottom: 0.75rem;
-  transition: all 0.15s;
-}
-.portfolioLink:hover { background: var(--surface-hover); }
-.portfolioLink > span:first-child { font-size: 1.4rem; flex-shrink: 0; }
-.portfolioLink > div { flex: 1; }
-
 /* Passport link */
 .passportLink {
   display: flex; align-items: center; gap: 0.875rem;

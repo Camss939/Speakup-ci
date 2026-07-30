@@ -436,15 +436,6 @@
   border-radius: 6px; padding: 0.2rem 0.5rem; cursor: pointer;
 }
 
-.portfolioBtn {
-  display: inline-flex; align-items: center; gap: 0.3rem;
-  background: var(--bg); border: 1px solid var(--border);
-  border-radius: 8px; padding: 0.4rem 0.75rem;
-  font-size: 0.8rem; font-weight: 600; color: var(--text);
-  text-decoration: none; transition: all 0.15s;
-}
-.portfolioBtn:hover { background: var(--accent-light); color: var(--accent); }
-
 /* ── Director AI ──────────────────────── */
 .directorAI {
   background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
