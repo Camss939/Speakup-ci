@@ -160,17 +160,20 @@ export default function Coach() {
     setError(null);
     if (voiceModeRef.current) setVS(VS.PROCESSING);
     try {
-      const text = await sendMessage(profile?.id || user?.id, next, topicContext);
+      const { text, correction } = await sendMessage(profile?.id || user?.id, next, topicContext);
+      // Attach correction to the user message that triggered it
+      const nextWithCorrection = next.map((m, i) =>
+        i === next.length - 1 && correction ? { ...m, correction } : m
+      );
       const coachMsg = { role: 'assistant', content: text };
-      const final = [...next, coachMsg];
+      const final = [...nextWithCorrection, coachMsg];
       setMessages(final);
       if (user) {
         await saveConversationHistory(user.id, moduleId, final);
         if (final.length >= 6) {
-          // Progression basée sur la qualité : longueur moyenne des messages utilisateur
           const userMsgs = final.filter(m => m.role === 'user');
           const avgLen = userMsgs.reduce((s, m) => s + m.content.split(' ').length, 0) / userMsgs.length;
-          const qualityBonus = Math.min(1.5, avgLen / 8); // max 1.5x si messages riches
+          const qualityBonus = Math.min(1.5, avgLen / 8);
           const pct = Math.min(100, Math.round(userMsgs.length * 10 * qualityBonus));
           setModuleProgress(user.id, moduleId, pct);
         }
@@ -433,9 +436,24 @@ export default function Coach() {
 
       <div className={styles.messages}>
         {messages.map((m, i) => (
-          <div key={i} className={`${styles.bubble} ${m.role === 'user' ? styles.user : styles.coach}`}>
-            {m.role === 'assistant' && <span className={styles.coachAvatar}>🎙️</span>}
-            <div className={styles.bubbleText}>{m.content}</div>
+          <div key={i} className={styles.msgGroup}>
+            <div className={`${styles.bubble} ${m.role === 'user' ? styles.user : styles.coach}`}>
+              {m.role === 'assistant' && <span className={styles.coachAvatar}>🎙️</span>}
+              <div className={styles.bubbleText}>{m.content}</div>
+            </div>
+            {m.role === 'user' && m.correction && (
+              <div className={styles.correctionCard}>
+                <span className={styles.correctionIcon}>✏️</span>
+                <div className={styles.correctionBody}>
+                  <div className={styles.correctionLine}>
+                    <span className={styles.correctionWrong}>"{m.correction.error}"</span>
+                    <span className={styles.correctionArrow}>→</span>
+                    <span className={styles.correctionRight}>"{m.correction.correction}"</span>
+                  </div>
+                  <div className={styles.correctionRule}>{m.correction.rule}</div>
+                </div>
+              </div>
+            )}
           </div>
         ))}
         {loading && !voiceMode && (

@@ -19,7 +19,7 @@ export async function sendMessage(userId, messages, topicContext) {
     throw new Error(err.error || 'Coach unavailable');
   }
   const data = await res.json();
-  return data.text;
+  return { text: data.text, correction: data.correction || null };
 }
 
 let currentAudio = null;

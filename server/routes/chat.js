@@ -52,6 +52,36 @@ When the user sends a voice message, occasionally (not every time) add a short p
 Plain spoken text only — no bullet points, no markdown. Write as you would speak.`;
 }
 
+const CORRECTION_SYSTEM = `You are an English grammar checker for a Francophone African learner.
+Analyze the user's message for grammar, vocabulary, or structure errors.
+Return ONLY valid JSON — no markdown, no extra text.
+If there is a clear error: {"error":"the wrong part","correction":"the correct form","rule":"short explanation in French, max 8 words"}
+If the message is correct or too short to judge: {"error":null}
+Examples:
+Input: "I am go to school" → {"error":"I am go","correction":"I am going","rule":"Présent continu → verbe + -ing"}
+Input: "He don't like football" → {"error":"don't","correction":"doesn't","rule":"3e personne singulier → doesn't"}
+Input: "I love football" → {"error":null}`;
+
+async function detectError(userText) {
+  if (!userText || userText.trim().length < 4) return null;
+  try {
+    const r = await getGroq().chat.completions.create({
+      model: 'llama-3.3-70b-versatile',
+      max_tokens: 80,
+      temperature: 0.1,
+      response_format: { type: 'json_object' },
+      messages: [
+        { role: 'system', content: CORRECTION_SYSTEM },
+        { role: 'user', content: userText },
+      ],
+    });
+    const parsed = JSON.parse(r.choices[0].message.content);
+    return parsed.error ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
 export async function chat(req, res) {
   const { messages, topicContext } = req.body;
 
@@ -65,17 +95,22 @@ export async function chat(req, res) {
     return res.status(403).json({ error: 'Account not approved yet' });
   }
 
-  try {
-    const response = await getGroq().chat.completions.create({
-      model: 'llama-3.3-70b-versatile',
-      max_tokens: 400,
-      messages: [
-        { role: 'system', content: buildSystemPrompt(profile, topicContext) },
-        ...messages.map(m => ({ role: m.role === 'assistant' ? 'assistant' : 'user', content: m.content })),
-      ],
-    });
+  const lastUserMsg = [...messages].reverse().find(m => m.role === 'user');
 
-    res.json({ text: response.choices[0].message.content });
+  try {
+    const [response, correction] = await Promise.all([
+      getGroq().chat.completions.create({
+        model: 'llama-3.3-70b-versatile',
+        max_tokens: 400,
+        messages: [
+          { role: 'system', content: buildSystemPrompt(profile, topicContext) },
+          ...messages.map(m => ({ role: m.role === 'assistant' ? 'assistant' : 'user', content: m.content })),
+        ],
+      }),
+      detectError(lastUserMsg?.content || ''),
+    ]);
+
+    res.json({ text: response.choices[0].message.content, correction });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Coach unavailable' });
