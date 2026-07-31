@@ -57,6 +57,11 @@ export default function Coach() {
   const [ready, setReady] = useState(false);
   const [sessionStart] = useState(Date.now());
 
+  // Mini-lesson phase
+  const [lessonPhase, setLessonPhase] = useState(moduleId !== 'libre');
+  const [lesson, setLesson] = useState(null);
+  const [lessonLoading, setLessonLoading] = useState(false);
+
   // Voice conversation mode
   const [voiceMode, setVoiceMode] = useState(false);
   const [voiceState, setVoiceState] = useState(VS.IDLE);
@@ -87,8 +92,28 @@ export default function Coach() {
     getConversationHistory(user.id, moduleId).then(hist => {
       setMessages(hist);
       setReady(true);
+      // Skip lesson if conversation already started
+      if (hist.length > 0) setLessonPhase(false);
     });
   }, [user, moduleId]);
+
+  useEffect(() => {
+    if (!lessonPhase || moduleId === 'libre' || !found) return;
+    setLessonLoading(true);
+    fetch(`${API}/api/lesson`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        moduleTitle: found.mod.title,
+        topicLabel: found.topic.label,
+        vocab: found.mod.vocab || [],
+        level: profile?.level || 'beginner',
+      }),
+    })
+      .then(r => r.json())
+      .then(data => { setLesson(data); setLessonLoading(false); })
+      .catch(() => { setLessonPhase(false); setLessonLoading(false); });
+  }, [lessonPhase, moduleId]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -310,6 +335,68 @@ export default function Coach() {
 
   if (!found) return <div className={styles.notfound}>Module introuvable. <button onClick={() => navigate('/topics')}>Retour</button></div>;
   const { topic, mod } = found;
+
+  // ── Mini-leçon ──────────────────────────────────────────────
+  if (lessonPhase) {
+    return (
+      <div className={styles.lessonPage}>
+        <button className={styles.lessonSkip} onClick={() => setLessonPhase(false)}>Passer →</button>
+
+        <div className={styles.lessonCard}>
+          <div className={styles.lessonBadge}>📖 Mini-leçon</div>
+          <div className={styles.lessonModule}>
+            <span>{topic.emoji}</span>
+            <span>{mod.title}</span>
+          </div>
+
+          {lessonLoading || !lesson ? (
+            <div className={styles.lessonSkeleton}>
+              <div className={styles.skeletonTitle} />
+              {[1,2,3].map(i => (
+                <div key={i} className={styles.skeletonItem}>
+                  <div className={styles.skeletonExpression} />
+                  <div className={styles.skeletonLine} />
+                  <div className={styles.skeletonLine} style={{width:'70%'}} />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <>
+              <h2 className={styles.lessonTitle}>{lesson.title}</h2>
+
+              <div className={styles.lessonPoints}>
+                {(lesson.points || []).map((p, i) => (
+                  <div key={i} className={styles.lessonPoint}>
+                    <div className={styles.lessonPointNum}>{i + 1}</div>
+                    <div className={styles.lessonPointBody}>
+                      <div className={styles.lessonExpression}>"{p.expression}"</div>
+                      <div className={styles.lessonMeaning}>🇫🇷 {p.meaning}</div>
+                      <div className={styles.lessonExample}>💬 <em>{p.example}</em></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {lesson.tip && (
+                <div className={styles.lessonTip}>
+                  <span>💡</span>
+                  <span>{lesson.tip}</span>
+                </div>
+              )}
+            </>
+          )}
+
+          <button
+            className={styles.lessonStart}
+            onClick={() => setLessonPhase(false)}
+            disabled={lessonLoading}
+          >
+            {lessonLoading ? 'Préparation…' : 'Commencer à pratiquer →'}
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (evaluation) {
     return <SessionReport

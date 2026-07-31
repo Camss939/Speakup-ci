@@ -439,3 +439,170 @@
   from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* ──────────────────────────────────────
+   MINI-LEÇON
+────────────────────────────────────── */
+.lessonPage {
+  min-height: 100dvh;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 1rem;
+  position: relative;
+}
+
+.lessonSkip {
+  position: absolute;
+  top: 1.25rem; right: 1.25rem;
+  background: none; border: 1px solid var(--border);
+  border-radius: 2rem; padding: 0.35rem 0.875rem;
+  font-size: 0.8rem; color: var(--text-muted);
+  cursor: pointer; transition: all 0.15s;
+}
+.lessonSkip:hover { color: var(--text); background: var(--surface); }
+
+.lessonCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2rem 1.75rem;
+  width: 100%;
+  max-width: 480px;
+  animation: fadeIn 0.3s ease;
+}
+
+.lessonBadge {
+  display: inline-block;
+  background: var(--accent-light);
+  color: var(--accent);
+  border-radius: 2rem;
+  padding: 0.25rem 0.875rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-bottom: 0.875rem;
+}
+
+.lessonModule {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+}
+
+.lessonTitle {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text);
+  margin: 0 0 1.25rem;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+
+.lessonPoints {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.lessonPoint {
+  display: flex;
+  gap: 0.875rem;
+  align-items: flex-start;
+}
+
+.lessonPointNum {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), #7c3aed);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.lessonPointBody { flex: 1; }
+
+.lessonExpression {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--accent);
+  margin-bottom: 0.2rem;
+}
+
+.lessonMeaning {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.lessonExample {
+  font-size: 0.82rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.lessonTip {
+  display: flex;
+  gap: 0.625rem;
+  align-items: flex-start;
+  background: rgba(99,102,241,0.08);
+  border: 1px solid rgba(99,102,241,0.15);
+  border-radius: 10px;
+  padding: 0.75rem;
+  font-size: 0.82rem;
+  color: var(--text);
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+
+.lessonStart {
+  width: 100%;
+  padding: 0.875rem;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, var(--accent), #7c3aed);
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  letter-spacing: -0.01em;
+}
+.lessonStart:hover:not(:disabled) { opacity: 0.88; }
+.lessonStart:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Skeleton loading */
+.lessonSkeleton { margin-bottom: 1.5rem; }
+.skeletonTitle {
+  height: 22px; border-radius: 6px;
+  background: var(--border);
+  margin-bottom: 1.25rem;
+  animation: shimmer 1.4s infinite;
+}
+.skeletonItem { margin-bottom: 1rem; }
+.skeletonExpression {
+  height: 18px; width: 55%; border-radius: 5px;
+  background: var(--border);
+  margin-bottom: 0.4rem;
+  animation: shimmer 1.4s infinite;
+}
+.skeletonLine {
+  height: 13px; width: 85%; border-radius: 4px;
+  background: var(--border);
+  margin-bottom: 0.3rem;
+  animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
